@@ -1,0 +1,13 @@
+
+
+@font-face {
+  font-family: "Geist";
+  src: url(/font/GeistVariableVF.woff2) format("woff2");
+}
+
+html { font-family: Geist; }
+
+.app-footer {
+  padding: 1rem;
+  text-align: center;
+}
