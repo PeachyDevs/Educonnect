@@ -22,18 +22,21 @@ export default function Login() {
         setErrorMsg("");
         setLoading(true);
 
+        // Dynamically assign URL based on the environment
+        const serverUrl =
+            import.meta.env.VITE_NODE_ENV === "Development"
+                ? import.meta.env.VITE_SERVER_URL_DEV
+                : import.meta.env.VITE_SERVER_URL_PROD;
+
         try {
-            const response = await fetch(
-                `${import.meta.env.VITE_SERVER_URL}/auth/login`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        email: formData.email,
-                        password: formData.password
-                    })
-                }
-            );
+            const response = await fetch(`${serverUrl}/auth/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: formData.email,
+                    password: formData.password
+                })
+            });
 
             const data = await response.json();
 

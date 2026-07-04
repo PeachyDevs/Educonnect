@@ -25,28 +25,35 @@ export default function Signup() {
     const handleSubmit = async event => {
         event.preventDefault();
         setErrorMsg("");
+
+        // Prevent submission if no role is selected
+        if (!formData.role) {
+            setErrorMsg("Please select a role (Student or Mentor).");
+            return;
+        }
+
         setLoading(true);
 
+        // Dynamically assign URL based on the environment
+        const serverUrl =
+            import.meta.env.VITE_NODE_ENV === "Development"
+                ? import.meta.env.VITE_SERVER_URL_DEV
+                : import.meta.env.VITE_SERVER_URL_PROD;
+
         try {
-            const response = await fetch(
-                `${import.meta.env.VITE_SERVER_URL}/auth/register`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        first_name: formData.firstName,
-                        last_name: formData.lastName,
-                        role:
-                            formData.role === "mentor"
-                                ? "mentor"
-                                : "student",
-                        email: formData.email,
-                        password: formData.password,
-                        phone: formData.phone,
-                        address: formData.address
-                    })
-                }
-            );
+            const response = await fetch(`${serverUrl}/auth/register`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    first_name: formData.firstName,
+                    last_name: formData.lastName,
+                    role: formData.role, // Passes "student" or "mentor" safely now
+                    email: formData.email,
+                    password: formData.password,
+                    phone: formData.phone,
+                    address: formData.address
+                })
+            });
 
             const data = await response.json();
 
@@ -112,11 +119,11 @@ export default function Signup() {
                             onClick={() =>
                                 setFormData({
                                     ...formData,
-                                    role: "facilitator"
+                                    role: "mentor" // Fixed: Was "facilitator"
                                 })
                             }
                             className={`p-4 rounded-xl border-2 transition-all font-semibold ${
-                                formData.role === "facilitator"
+                                formData.role === "mentor" // Fixed: Was "facilitator"
                                     ? "border-green-600 bg-green-50 text-green-600"
                                     : "border-slate-300 bg-white text-slate-700 hover:border-slate-400"
                             }`}

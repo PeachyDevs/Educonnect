@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
     const navigate = useNavigate();
-
     const [formData, setFormData] = useState({
         role: "",
         email: "",
@@ -23,35 +22,45 @@ export default function Login() {
         setErrorMsg("");
         setLoading(true);
 
+        // Dynamically assign URL based on the environment
+        const serverUrl =
+            import.meta.env.VITE_NODE_ENV === "Development"
+                ? import.meta.env.VITE_SERVER_URL_DEV
+                : import.meta.env.VITE_SERVER_URL_PROD;
+
         try {
-            const response = await fetch(
-                `${import.meta.env.VITE_SERVER_URL}/auth/login`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        email: formData.email,
-                        password: formData.password
-                    })
-                }
-            );
+            const response = await fetch(`${serverUrl}/auth/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: formData.email,
+                    password: formData.password
+                })
+            });
 
             const data = await response.json();
 
             if (!response.ok) {
-                setErrorMsg(data.message || "Invalid credentials");
+                setErrorMsg(
+                    data.message || "Invalid credentials. Please try again."
+                );
                 return;
             }
 
-            // 🔐 STORE AUTH
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
 
+            // Optional: If you want to strictly enforce the role they clicked vs what the DB says:
+            if (formData.role && formData.role !== data.user.role) {
+                setErrorMsg("Account found, but role mismatch.");
+                return;
+            }
+
             navigate("/dashboard");
-        } catch (error) {
-            setErrorMsg("Network error. Please try again.");
+        } catch {
+            setErrorMsg(
+                "Network error. Please check your connection and try again."
+            );
         } finally {
             setLoading(false);
         }
@@ -63,106 +72,119 @@ export default function Login() {
 
     return (
         <div className="min-h-screen bg-slate-100 flex items-center justify-center p-8">
-            <div className="w-full max-w-2xl bg-white border rounded-2xl shadow-lg p-6 md:p-10">
+            <div className="w-full max-w-2xl bg-white border border-slate-200 rounded-2xl shadow-lg p-6 md:p-10">
                 <h1 className="text-3xl font-bold mb-2">Login</h1>
-
                 <p className="text-slate-600 mb-8">
-                    Enter your credentials to access your account.
+                    Select your role and enter your credentials to access your
+                    account.
                 </p>
 
-                {/* ROLE UI ONLY */}
                 <div className="mb-8">
                     <label className="block mb-4 font-medium text-slate-700">
-                        Log in as:
+                        Login as:
                     </label>
-
                     <div className="grid grid-cols-2 gap-4">
                         <button
                             type="button"
                             onClick={() =>
                                 setFormData({ ...formData, role: "student" })
                             }
-                            className={`p-4 rounded-xl border-2 font-semibold ${
+                            className={`p-4 rounded-xl border-2 transition-all font-semibold ${
                                 formData.role === "student"
                                     ? "border-blue-600 bg-blue-50 text-blue-600"
-                                    : "border-slate-300"
+                                    : "border-slate-300 bg-white text-slate-700 hover:border-slate-400"
                             }`}
                         >
                             👨‍🎓 Student
                         </button>
-
                         <button
                             type="button"
                             onClick={() =>
                                 setFormData({ ...formData, role: "mentor" })
                             }
-                            className={`p-4 rounded-xl border-2 font-semibold ${
+                            className={`p-4 rounded-xl border-2 transition-all font-semibold ${
                                 formData.role === "mentor"
                                     ? "border-green-600 bg-green-50 text-green-600"
-                                    : "border-slate-300"
+                                    : "border-slate-300 bg-white text-slate-700 hover:border-slate-400"
                             }`}
                         >
-                            👨‍🏫 Mentor
+                            👨‍🏫 Facilitator
                         </button>
                     </div>
                 </div>
 
-                {/* FORM */}
                 <form
                     onSubmit={handleSubmit}
                     className="grid grid-cols-1 gap-6"
                 >
-                    <input
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="Email"
-                        className="p-3 border rounded-lg"
-                        required
-                    />
-
-                    <input
-                        name="password"
-                        type="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        placeholder="Password"
-                        className="p-3 border rounded-lg"
-                        required
-                    />
+                    <div>
+                        <label className="block mb-1 font-medium text-slate-700">
+                            Email
+                        </label>
+                        <input
+                            name="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="w-full rounded-lg border border-slate-300 p-3 focus:border-blue-500 focus:outline-none"
+                            placeholder="you@example.com"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <div className="flex justify-between items-center mb-1">
+                            <label className="font-medium text-slate-700">
+                                Password
+                            </label>
+                            <Link
+                                to="/auth/forgot-password"
+                                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                            >
+                                Forgot Password?
+                            </Link>
+                        </div>
+                        <input
+                            name="password"
+                            type="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className="w-full rounded-lg border border-slate-300 p-3 focus:border-blue-500 focus:outline-none"
+                            placeholder="Enter your password"
+                            required
+                        />
+                    </div>
 
                     {errorMsg && (
-                        <div className="p-3 bg-red-50 border border-red-300 text-red-700 rounded-lg">
+                        <div className="p-3 bg-red-50 border border-red-300 rounded-lg text-red-700 text-sm">
                             {errorMsg}
                         </div>
                     )}
 
-                    <div className="flex justify-end gap-3">
+                    <div className="flex justify-end gap-3 mt-3">
                         <button
                             type="button"
                             onClick={handleClear}
-                            className="px-5 py-2 border rounded-lg"
+                            className="px-5 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50"
                         >
                             Clear
                         </button>
-
                         <button
                             type="submit"
                             disabled={loading}
-                            className="px-5 py-2 bg-blue-600 text-white rounded-lg"
+                            className="px-5 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 disabled:opacity-50"
                         >
                             {loading ? "Logging in..." : "Login"}
                         </button>
                     </div>
                 </form>
 
-                <div className="text-center mt-6 text-sm">
+                <div className="text-center mt-6 text-sm text-slate-600">
+                    Don't have an account?{" "}
                     <Link
                         to="/auth/signup"
-                        className="text-blue-600 font-semibold"
+                        className="text-blue-600 hover:text-blue-700 font-semibold"
                     >
-                        Create account
+                        Signup
                     </Link>
                 </div>
             </div>
