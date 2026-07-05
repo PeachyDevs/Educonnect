@@ -19,7 +19,7 @@ import Username from "./pages/Username.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import ResetPassword from "./pages/auth/ResetPassword";
 import ForgotPassword from "./pages/auth/ForgotPassword";
-import ProfileSetup from "./pages/ProfileSetup.jsx";
+import ProfileSetup from "./pages/auth/ProfileSetup.jsx";
 
 // Add this route
 
