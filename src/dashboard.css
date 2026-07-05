@@ -865,10 +865,10 @@
   }
 
   /* Milestones */
-  .milestones-grid {
-    display: grid;
+  /* Fix achievements milestones grid to single column on smaller containers */
+  .main-content .milestones-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 16px;
   }
 
   .milestone {
@@ -2570,10 +2570,6 @@
 
     .stat-chip {
       flex: 1;
-    }
-
-    .milestones-grid {
-      grid-template-columns: 1fr;
     }
 
     /* Learning paths */
