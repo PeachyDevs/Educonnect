@@ -91,6 +91,17 @@ export default function Profile() {
     });
   };
 
+  const [connections, setConnections] = useState(() => {
+    return JSON.parse(localStorage.getItem("educonnect_connections") || "[]");
+  });
+
+  const handleConnect = (name) => {
+    if (connections.includes(name)) return;
+    const updated = [...connections, name];
+    setConnections(updated);
+    localStorage.setItem("educonnect_connections", JSON.stringify(updated));
+  };
+
   return (
     <>
       <Navbar />
@@ -152,7 +163,7 @@ export default function Profile() {
                 </div>
                 <div className="profile-actions">
                   <button
-                    className="btn-outline"
+                    className="btn-primary"
                     onClick={handleShareClick}
                     style={{
                       width: "130px",
@@ -322,15 +333,26 @@ export default function Profile() {
               <p className="connect-name">Chioma Eze</p>
               <p className="connect-sub">Python Cohort #4</p>
             </div>
-            <span className="connect-btn">+ Connect</span>
+            <span
+              className={`connect-btn ${connections.includes("Chioma Eze") ? "sent" : ""}`}
+              onClick={() => handleConnect("Chioma Eze")}
+            >
+              {connections.includes("Chioma Eze") ? "✓ Sent" : "+ Connect"}
+            </span>
           </div>
+
           <div className="connect-item">
             <div className="connect-avatar bg-yellow">D</div>
             <div className="connect-text">
               <p className="connect-name">David Mensah</p>
               <p className="connect-sub">Data Science path</p>
             </div>
-            <span className="connect-btn">+ Connect</span>
+            <span
+              className={`connect-btn ${connections.includes("David Mensah") ? "sent" : ""}`}
+              onClick={() => handleConnect("David Mensah")}
+            >
+              {connections.includes("David Mensah") ? "✓ Sent" : "+ Connect"}
+            </span>
           </div>
         </aside>
       </div>

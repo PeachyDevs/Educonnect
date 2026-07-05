@@ -47,8 +47,8 @@ export default function Dashboard() {
                 {loadingProfile
                   ? "..."
                   : profile
-                  ? profile.first_name
-                  : "there"}
+                    ? profile.first_name
+                    : "there"}
               </h2>
               <p className="welcome-desc">
                 {profile?.role === "facilitator"

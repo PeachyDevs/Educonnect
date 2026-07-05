@@ -590,15 +590,136 @@
     border-color: var(--blue);
   }
 
-  .search-icon {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 16px;
-    pointer-events: none;
+  /* Smart Search */
+  .smart-search-wrap {
+    position: relative;
+    width: 100%;
   }
 
+  .smart-search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    transition: border-color 0.2s;
+  }
+
+  .smart-search-box:focus-within {
+    border-color: var(--blue);
+  }
+
+  .smart-search-icon {
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .smart-search-input {
+    flex: 1;
+    border: none !important;
+    background: transparent !important;
+    outline: none;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--text-dark);
+    padding: 0 !important;
+  }
+
+  .smart-search-clear {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    border-radius: 50%;
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+
+  .smart-search-clear:hover {
+    background: var(--bg-page);
+    color: var(--text-dark);
+  }
+
+  .smart-search-suggestions {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+    z-index: 100;
+    overflow: hidden;
+  }
+
+  .smart-search-suggestion-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+
+  .smart-search-suggestion-item:last-child {
+    border-bottom: none;
+  }
+
+  .smart-search-suggestion-item:hover {
+    background: var(--bg-page);
+  }
+
+  .suggestion-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .suggestion-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 2px;
+  }
+
+  .suggestion-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .smart-search-empty {
+    padding: 16px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  [data-theme="dark"] .smart-search-box {
+    background: #1e293b;
+    border-color: #334155;
+  }
+
+  [data-theme="dark"] .smart-search-input {
+    color: #f8fafc;
+  }
+
+  [data-theme="dark"] .smart-search-suggestions {
+    background: #1e293b;
+    border-color: #334155;
+  }
+
+  [data-theme="dark"] .smart-search-suggestion-item:hover {
+    background: #0f172a;
+  }
   /* ─────────────────────────────────────────────────────────────
    DASHBOARD (index.html)
 ───────────────────────────────────────────────────────────── */
@@ -2014,11 +2135,12 @@
   }
 
   .profile-avatar {
-    width: 72px;
-    height: 72px;
+    width: 36px !important;
+    height: 36px !important;
     /* Ensure the background of the avatar is solid so it pops against the black */
     background: var(--text-dark);
     border: 2px solid var(--bg-card);
+    object-fit: cover;
     border-radius: 50%;
 
     /* This prevents the flexbox from squishing the circle */
@@ -2641,10 +2763,11 @@
   /* INPUTS */
   input {
     width: 100%;
-    background-color: #c4c4c4;
     padding: 12px;
     border-radius: 8px;
-    border: 2px solid #000000;
+    border: 1.5px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-dark);
     font-size: 14px;
   }
 
@@ -3447,13 +3570,6 @@ button:hover {
     border-color: #334155 !important;
   }
 
-  /* 4. Fix the Search Input text (so you can see what you type) */
-  [data-theme="dark"] .search-input {
-    background-color: #0f172a !important;
-    color: #ffffff !important;
-    border-color: #334155 !important;
-  }
-
   /* --- MENU CARD GLASS HOVER ONLY --- */
 
   /* Reset any default hover background that might be white */
@@ -3667,46 +3783,36 @@ button:hover {
     color: #040505;
   }
 
-  /*--- 2FA & RECOVERY CODES STYLING ---*/
-  .recovery-codes-box {
-    background: rgba(104, 104, 104, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 12px;
-    margin-top: 20px;
-    width: 100%;
-  }
-
-  [data-theme="dark"] .recovery-codes-box {
-    background: rgba(255, 255, 255, 0.3);
-    border: solid rgba(255, 255, 255, 0.1);
-  }
-
-  .codes-grip {
+  .codes-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin: 20px 0;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 12px 0;
   }
 
-  .codes-grip code {
-    background: #f1f5f9;
-    padding: 8px;
-    text-align: center;
-    border-radius: 4px;
+  .codes-grid code {
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
     font-family: monospace;
-    font-size: 0.9rem;
-    border: 1px solid #1e293b;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--blue);
+    text-align: center;
     display: block;
-    word-break: break-all;
-    font-weight: bold;
-    color: #1e293b;
   }
 
-  [data-theme="dark"] .codes-grip code {
-    background: #0f172a !important; /* Deep Navy backgrounds for cods*/
-    color: #3b82f6 !important; /*Bright blu text so they "glow" */
-    border: 1px solid #1e293b;
+  [data-theme="dark"] .codes-grid code {
+    background: #0f172a;
+    color: #3b82f6;
+    border-color: #334155;
+  }
+
+  .security-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   [data-theme="dark"] .btn-outline {
@@ -3721,11 +3827,6 @@ button:hover {
 
   [data-theme="dark"] .value {
     /* Deep Navy backgrounds for cods*/
-    color: #ffffff !important;
-  }
-
-  [data-theme="dark"] .settings-input {
-    background: #0f172a !important; /* Deep Navy backgrounds for cods*/
     color: #ffffff !important;
   }
 
@@ -3917,23 +4018,227 @@ button:hover {
     height: 8px;
     background: #3b82f6;
     border-radius: 50%;
-    position: absolute;
-    top: 22px;
-    right: 15px; /* Keeps the dot safely to the right of the timeline text */
+    flex-shrink: 0;
+    margin-top: 4px;
+    margin-left: 8px;
+    align-self: flex-start;
   }
 
-  /* Safety zone so text never touches or wraps underneath the blue dot */
+  .notif-card:not(.unread) .notif-indicator {
+    visibility: hidden;
+  }
+
   .notif-title-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    padding-right: 25px;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    margin-bottom: 6px;
+    gap: 12px;
+    width: 100%;
   }
 
   .notif-title-row h4 {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    font-weight: 700;
     margin: 0;
+    flex: 1;
+    color: var(--text-dark);
   }
+
+  .notif-title-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .notif-indicator {
+    width: 8px;
+    height: 8px;
+    background: #3b82f6;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .notif-time {
+    display: flex;
+    font-size: 0.78rem;
+    color: var(--text-muted) !important;
+    white-space: nowrap !important;
+    flex-shrink: 0;
+    margin-left: auto;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  .notif-content {
+    width: 100%;
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Notification Bell Wrapper */
+  .notif-bell-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .bell-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+  }
+
+  .bell-btn:hover {
+    background: #334155;
+  }
+
+  bell-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+  }
+
+  .bell-btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+  }
+
+  /* Unread Badge */
+  .notif-badge {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg-card);
+  }
+
+  /* Dropdown Panel */
+  .notif-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: -80px;
+    width: 320px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+    z-index: 999;
+    overflow: hidden;
+  }
+
+  .notif-dropdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text-dark);
+  }
+
+  .notif-dropdown-count {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+  }
+
+  .notif-dropdown-item {
+    padding: 12px 16px;
+    border-left: 3px solid transparent;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .notif-dropdown-item:hover {
+    background: var(--bg-page);
+  }
+
+  .notif-dropdown-item.unread {
+    background: rgba(37, 99, 235, 0.05);
+  }
+
+  .notif-dropdown-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+  }
+
+  .notif-dropdown-msg {
+    font-size: 12px;
+    color: var(--text-mid);
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+
+  .notif-dropdown-time {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .notif-dropdown-viewall {
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    background: none;
+    border: none;
+    color: var(--blue);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.2s;
+  }
+
+  .notif-dropdown-viewall:hover {
+    background: var(--blue-light);
+  }
+
+  /* Dark mode fixes */
+  [data-theme="dark"] .notif-dropdown {
+    background: #1e293b;
+    border-color: #334155;
+  }
+
+  [data-theme="dark"] .notif-dropdown-item.unread {
+    background: rgba(37, 99, 235, 0.1);
+  }
+
+  [data-theme="dark"] .notif-dropdown-title {
+    color: #f8fafc;
+  }
+
+  [data-theme="dark"] .notif-dropdown-msg {
+    color: #cbd5e1;
+  }
+
+  [data-theme="dark"] .notif-dropdown-time {
+    color: #94a3b8;
+  }
+
   [data-theme="light"] .notif-title-row h4 {
     color: #0f172a;
   }
@@ -3974,6 +4279,35 @@ button:hover {
     color: #94a3b8;
   }
 
+  .notif-section-header {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    padding: 20px 0 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+
+  .notif-select {
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    font-size: 13px;
+    color: var(--text-dark);
+    cursor: pointer;
+    outline: none;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .notif-select {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #334155;
+  }
+
   /* ==========================================
    NAVBAR COMPONENT BALANCING & ADJUSTMENTS
    ========================================== */
@@ -3996,6 +4330,31 @@ button:hover {
     height: 28px !important;
     width: 28px !important;
   }
+
+  .settings-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-dark);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+
+  .settings-input:focus {
+    border-color: var(--blue);
+  }
+
+  [data-theme="dark"] .settings-input {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #334155;
+  }
+
   /* ==========================================
    MAIN PROFILE AVATAR FIX
    ========================================== */
@@ -4130,5 +4489,66 @@ button:hover {
     object-fit: contain;
     /* Turns the default dark vector path crisp white */
     filter: invert(1) brightness(2);
+  }
+
+  .logo-transition-wrap {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 36px;
+    overflow: hidden;
+  }
+
+  .logo-img {
+    animation: logoLoop 6s ease-in-out infinite;
+    position: absolute;
+  }
+
+  .logo-text {
+    font-family: var(--font-head);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--blue);
+    animation: textLoop 6s ease-in-out infinite;
+    white-space: nowrap;
+    padding-left: 4px;
+  }
+
+  @keyframes logoLoop {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    40% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    60% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes textLoop {
+    0% {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    40% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    60% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
   }
 }

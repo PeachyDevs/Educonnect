@@ -49,21 +49,21 @@ export default function Notifications({ currentTheme }) {
   const markAsRead = (id) => {
     setNotifications((prev) =>
       prev.map((notif) =>
-        notif.id === id ? { ...notif, unread: false } : notif
-      )
+        notif.id === id ? { ...notif, unread: false } : notif,
+      ),
     );
   };
 
   // Mark everything as read at once
   const markAllAllAsRead = () => {
     setNotifications((prev) =>
-      prev.map((notif) => ({ ...notif, unread: false }))
+      prev.map((notif) => ({ ...notif, unread: false })),
     );
   };
 
   // Filter logic
   const filteredNotifications = notifications.filter((notif) =>
-    activeFilter === "all" ? true : notif.category === activeFilter
+    activeFilter === "all" ? true : notif.category === activeFilter,
   );
 
   return (
@@ -126,11 +126,15 @@ export default function Notifications({ currentTheme }) {
                   className={`notif-card ${notif.unread ? "unread" : ""} urgency-${notif.urgency}`}
                   onClick={() => markAsRead(notif.id)}
                 >
-                  <div className="notif-indicator"></div>
                   <div className="notif-content">
                     <div className="notif-title-row">
                       <h4>{notif.title}</h4>
-                      <span className="notif-time">{notif.time}</span>
+                      <div className="notif-title-right">
+                        <span className="notif-time">{notif.time}</span>
+                        {notif.unread && (
+                          <span className="notif-indicator"></span>
+                        )}
+                      </div>
                     </div>
                     <p>{notif.message}</p>
                   </div>
