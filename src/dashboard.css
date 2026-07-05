@@ -1290,6 +1290,23 @@
     color: var(--text-muted);
   }
 
+  .event-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .event-sub strong {
+    font-weight: 700;
+  }
+  .event-sub a {
+    color: var(--blue);
+    font-weight: 600;
+  }
+  .event-link {
+    font-size: 11px;
+    color: var(--blue);
+    font-weight: 600;
+  }
+
   /* ─────────────────────────────────────────────────────────────
    LEARNING PATHS (learning.html)
 ───────────────────────────────────────────────────────────── */
