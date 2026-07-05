@@ -19,6 +19,9 @@ import Username from "./pages/Username.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import ResetPassword from "./pages/auth/ResetPassword";
 import ForgotPassword from "./pages/auth/ForgotPassword";
+import ProfileSetup from "./pages/ProfileSetup.jsx";
+
+// Add this route
 
 export default function App() {
   // Theme state persisted in localStorage
@@ -53,6 +56,7 @@ export default function App() {
           element={<Settings currentTheme={theme} onThemeChange={setTheme} />}
         />
         <Route path="*" element={<NotFound />} />
+        <Route path="/profile-setup" element={<ProfileSetup />} />
       </Routes>
     </BrowserRouter>
   );

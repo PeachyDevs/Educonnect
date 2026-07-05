@@ -45,7 +45,12 @@ export default function Login() {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      navigate("/dashboard");
+      const setupDone = localStorage.getItem("educonnect_profile_setup");
+      if (setupDone) {
+        navigate("/dashboard");
+      } else {
+        navigate("/profile-setup");
+      }
     } catch {
       setErrorMsg("Network error. Please check your connection and try again.");
     } finally {
