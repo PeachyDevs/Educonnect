@@ -1992,6 +1992,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    background: var(--green);
+    color: #fff;
   }
 
   .disc-members {
