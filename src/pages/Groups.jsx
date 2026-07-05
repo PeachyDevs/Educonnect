@@ -169,7 +169,21 @@ export default function Groups() {
                   Weekly deep-dives into machine learning papers and Kaggle
                   competitions. All levels welcome.
                 </p>
-                <div className="disc-footer">Join group</div>
+                <button className="disc-footer">Join group</button>
+              </div>
+            </div>
+            <div className="discover-grid">
+              <div className="disc-card">
+                <div className="disc-card-top">
+                  <span className="disc-emoji">֎🇦🇮</span>
+                  <span className="disc-size">20 members</span>
+                </div>
+                <p className="disc-name">Deep Learning Enthusiasts</p>
+                <p className="disc-desc">
+                  study group for deep learning, neural networks, and AI
+                  research. We share papers, tutorials, and projects.
+                </p>
+                <button className="disc-footer">Join group</button>
               </div>
             </div>
           </section>

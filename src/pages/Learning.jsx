@@ -289,7 +289,7 @@ export default function Learning() {
             <div className="cert-icon yellow large">🎯</div>
             <div>
               <p className="cert-name">Data Analysis</p>
-              <p className="cert-status">In progress · 37%</p>
+              <p className="cert-status yellow">In progress · 37%</p>
             </div>
           </div>
           <div className="cert-item">
