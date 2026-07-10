@@ -4570,3 +4570,42 @@ button:hover {
     }
   }
 }
+
+/* Container for the settings icon */
+.settings-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* The dropdown menu box */
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Places it right below the icon */
+  right: 0;
+  margin-top: 10px;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  width: 150px;
+  z-index: 50; /* Ensures it stays on top of other elements */
+}
+
+/* Style for the buttons inside */
+.dropdown-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #374151;
+}
+
+.dropdown-menu button:hover {
+  background-color: #f9fafb;
+}

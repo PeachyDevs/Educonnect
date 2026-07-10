@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { IoNotificationsOutline } from "react-icons/io5";
-import { IoSettingsOutline } from "react-icons/io5";
+import { IoNotificationsOutline, IoSettingsOutline } from "react-icons/io5";
 import logo from "../../images/E.png";
 import profileImage from "../../images/eeh.jpg";
 
@@ -35,19 +34,26 @@ const previewNotifications = [
 export default function NavbarApp({ currentTheme }) {
   const [isRinging, setIsRinging] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [readIds, setReadIds] = useState(() => {
-    return JSON.parse(localStorage.getItem("educonnect_read_notifs") || "[]");
-  });
+  const [settingsOpen, setSettingsOpen] = useState(false); // New state
+  const [readIds, setReadIds] = useState(() =>
+    JSON.parse(localStorage.getItem("educonnect_read_notifs") || "[]"),
+  );
+
   const dropdownRef = useRef(null);
+  const settingsRef = useRef(null); // New ref
   const navigate = useNavigate();
 
-  const unreadCount = previewNotifications.filter(
-    (n) => n.unread && !readIds.includes(n.id),
-  ).length;
+  const [navbarAvatar, setNavbarAppAvatar] = useState(
+    () => localStorage.getItem("educonnect_avatar") || profileImage,
+  );
 
-  const [navbarAvatar, setNavbarAppAvatar] = useState(() => {
-    return localStorage.getItem("educonnect_avatar") || profileImage;
-  });
+  // Logout Logic[cite: 1]
+  const handleLogout = () => {
+    localStorage.removeItem("educonnect_avatar");
+    localStorage.removeItem("educonnect_read_notifs");
+    setSettingsOpen(false);
+    navigate("/login");
+  };
 
   useEffect(() => {
     const handleAvatarUpdate = () => {
@@ -67,7 +73,12 @@ export default function NavbarApp({ currentTheme }) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false);
       }
+
+      if (settingsRef.current && !settingsRef.current.contains(e.target)) {
+        setSettingsOpen(false);
+      }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -82,6 +93,10 @@ export default function NavbarApp({ currentTheme }) {
     setReadIds(allIds);
     localStorage.setItem("educonnect_read_notifs", JSON.stringify(allIds));
   };
+
+  const unreadCount = previewNotifications.filter(
+    (notif) => notif.unread && !readIds.includes(notif.id),
+  ).length;
 
   return (
     <header className={`navbar ${currentTheme || ""}`}>
@@ -140,9 +155,37 @@ export default function NavbarApp({ currentTheme }) {
           )}
         </div>
 
-        <NavLink to="/settings" className="logo-link">
-          <IoSettingsOutline className="nav-icon settings-gear" size={32} />
-        </NavLink>
+        <div
+          className="settings-wrapper"
+          ref={settingsRef}
+          style={{ position: "relative" }}
+        >
+          <button
+            className="logo-link"
+            onClick={() => setSettingsOpen(!settingsOpen)}
+          >
+            <IoSettingsOutline className="nav-icon settings-gear" size={32} />
+          </button>
+
+          {settingsOpen && (
+            <div
+              className="dropdown-menu"
+              style={{ position: "absolute", right: 0, zIndex: 10 }}
+            >
+              <button
+                onClick={() => {
+                  setSettingsOpen(false);
+                  navigate("/settings");
+                }}
+              >
+                Settings
+              </button>
+              <button onClick={handleLogout} style={{ color: "red" }}>
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
 
         <NavLink to="/profile" className="logo-link">
           <img
