@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { User } from "lucide-react";
 
 export default function ProfileSetup() {
   const navigate = useNavigate();
@@ -257,7 +258,7 @@ export default function ProfileSetup() {
                       }}
                     />
                   ) : (
-                    "👤"
+                    <User size={40} color="white" />
                   )}
                 </div>
                 <input

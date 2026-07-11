@@ -1,8 +1,19 @@
 import { useState, useEffect, useRef } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { IoNotificationsOutline, IoSettingsOutline } from "react-icons/io5";
+import { Search, X } from "lucide-react";
 import logo from "../../images/E.png";
 import profileImage from "../../images/eeh.jpg";
+import { ReactTyped } from "react-typed";
+import {
+  User,
+  Shield,
+  Bell,
+  Palette,
+  LogOut,
+  Settings,
+  UserCircle,
+} from "lucide-react";
 
 const previewNotifications = [
   {
@@ -31,54 +42,82 @@ const previewNotifications = [
   },
 ];
 
+const settingsItems = [
+  { label: "Account", icon: <Settings size={15} />, section: "account" },
+  { label: "Profile", icon: <UserCircle size={15} />, section: "profile" },
+  { label: "Security", icon: <Shield size={15} />, section: "security" },
+  {
+    label: "Notifications",
+    icon: <Bell size={15} />,
+    section: "notifications",
+  },
+  { label: "Themes", icon: <Palette size={15} />, section: "themes" },
+];
+
+const pageNames = {
+  "/dashboard": "Dashboard",
+  "/learning": "My Courses",
+  "/project": "My Projects",
+  "/groups": "My Groups",
+  "/achievements": "Achievements",
+  "/profile": "Profile",
+  "/settings": "Settings",
+  "/notifications": "Notifications",
+};
+
 export default function NavbarApp({ currentTheme }) {
   const [isRinging, setIsRinging] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false); // New state
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [readIds, setReadIds] = useState(() =>
     JSON.parse(localStorage.getItem("educonnect_read_notifs") || "[]"),
   );
 
   const dropdownRef = useRef(null);
-  const settingsRef = useRef(null); // New ref
+  const settingsRef = useRef(null);
+  const searchRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const firstName = user.first_name || "there";
+  const currentPage = pageNames[location.pathname] || "";
 
   const [navbarAvatar, setNavbarAppAvatar] = useState(
     () => localStorage.getItem("educonnect_avatar") || profileImage,
   );
 
-  // Logout Logic[cite: 1]
   const handleLogout = () => {
-    localStorage.removeItem("educonnect_avatar");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     localStorage.removeItem("educonnect_read_notifs");
     setSettingsOpen(false);
-    navigate("/login");
+    navigate("/auth/login");
   };
 
   useEffect(() => {
     const handleAvatarUpdate = () => {
       const updatedAvatar = localStorage.getItem("educonnect_avatar");
-      if (updatedAvatar) {
-        setNavbarAppAvatar(updatedAvatar);
-      }
+      if (updatedAvatar) setNavbarAppAvatar(updatedAvatar);
     };
     window.addEventListener("avatarChanged", handleAvatarUpdate);
     return () =>
       window.removeEventListener("avatarChanged", handleAvatarUpdate);
   }, []);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target))
         setDropdownOpen(false);
-      }
-
-      if (settingsRef.current && !settingsRef.current.contains(e.target)) {
+      if (settingsRef.current && !settingsRef.current.contains(e.target))
         setSettingsOpen(false);
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setSearchOpen(false);
+        setSearchQuery("");
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -87,8 +126,7 @@ export default function NavbarApp({ currentTheme }) {
     setIsRinging(true);
     setTimeout(() => setIsRinging(false), 500);
     setDropdownOpen((prev) => !prev);
-
-    // Mark all as read
+    setSettingsOpen(false);
     const allIds = previewNotifications.map((n) => n.id);
     setReadIds(allIds);
     localStorage.setItem("educonnect_read_notifs", JSON.stringify(allIds));
@@ -98,22 +136,104 @@ export default function NavbarApp({ currentTheme }) {
     (notif) => notif.unread && !readIds.includes(notif.id),
   ).length;
 
+  const searchSuggestions = [
+    { label: "Dashboard", path: "/dashboard", icon: "📊" },
+    { label: "My Courses", path: "/learning", icon: "📚" },
+    { label: "My Projects", path: "/project", icon: "📁" },
+    { label: "My Groups", path: "/groups", icon: "👥" },
+    { label: "Achievements", path: "/achievements", icon: "🏆" },
+    { label: "Profile", path: "/profile", icon: "👤" },
+    { label: "Settings", path: "/settings", icon: "⚙️" },
+    { label: "Notifications", path: "/notifications", icon: "🔔" },
+  ].filter((s) => s.label.toLowerCase().includes(searchQuery.toLowerCase()));
+
   return (
     <header className={`navbar ${currentTheme || ""}`}>
-      <NavLink to="/dashboard" className="logo-link">
-        <div className="logo-transition-wrap">
-          <img src={logo} alt="EduConnect" className="nav-icon logo-img" />
-          <span className="logo-text">EduConnect</span>
-        </div>
-      </NavLink>
+      {/* Left — Logo + Page Title */}
+      <div className="navbar-left">
+        <NavLink to="/dashboard" className="logo-link">
+          <div className="logo-transition-wrap">
+            <img src={logo} alt="EduConnect" className="nav-icon logo-img" />
+            <span className="logo-text">
+              <ReactTyped
+                strings={["EduConnect"]}
+                typeSpeed={60}
+                backSpeed={40}
+                backDelay={1500}
+                loop
+                showCursor={false}
+              />
+            </span>
+          </div>
+        </NavLink>
+        {currentPage && (
+          <>
+            <span className="navbar-divider">/</span>
+            <span className="navbar-page-name">{currentPage}</span>
+          </>
+        )}
+      </div>
 
+      {/* Center — Search */}
+      <div className="navbar-center" ref={searchRef}>
+        {searchOpen ? (
+          <div className="navbar-search-box">
+            <Search size={14} className="navbar-search-icon" />
+            <input
+              autoFocus
+              className="navbar-search-input"
+              placeholder="Search pages..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button
+              className="navbar-search-close"
+              onClick={() => {
+                setSearchOpen(false);
+                setSearchQuery("");
+              }}
+            >
+              <X size={14} />
+            </button>
+            {searchQuery && searchSuggestions.length > 0 && (
+              <div className="navbar-search-suggestions">
+                {searchSuggestions.map((s) => (
+                  <div
+                    key={s.path}
+                    className="navbar-search-suggestion-item"
+                    onClick={() => {
+                      navigate(s.path);
+                      setSearchOpen(false);
+                      setSearchQuery("");
+                    }}
+                  >
+                    <span>{s.icon}</span>
+                    <span>{s.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <button
+            className="navbar-search-trigger"
+            onClick={() => setSearchOpen(true)}
+          >
+            <Search size={14} />
+            <span>Search...</span>
+            <span className="navbar-search-kbd">⌘K</span>
+          </button>
+        )}
+      </div>
+
+      {/* Right — Icons + Avatar */}
       <nav className="nav-links">
-        {/* Bell with badge and dropdown */}
+        {/* Bell */}
         <div className="notif-bell-wrapper" ref={dropdownRef}>
-          <button className="logo-link" onClick={handleBellClick}>
+          <button className="nav-icon-btn" onClick={handleBellClick}>
             <IoNotificationsOutline
               className={`nav-icon notification-bell ${isRinging ? "ring-active" : ""}`}
-              size={32}
+              size={24}
             />
             {unreadCount > 0 && (
               <span className="notif-badge">{unreadCount}</span>
@@ -136,10 +256,14 @@ export default function NavbarApp({ currentTheme }) {
                 >
                   <div className="notif-title-row">
                     <h4>{notif.title}</h4>
-                    <span className="notif-time">{notif.time}</span>
+                    <div className="notif-title-right">
+                      <span className="notif-time">{notif.time}</span>
+                      {notif.unread && !readIds.includes(notif.id) && (
+                        <span className="notif-indicator"></span>
+                      )}
+                    </div>
                   </div>
                   <div className="notif-dropdown-msg">{notif.message}</div>
-                  <div className="notif-dropdown-time">{notif.time}</div>
                 </div>
               ))}
               <button
@@ -155,39 +279,55 @@ export default function NavbarApp({ currentTheme }) {
           )}
         </div>
 
-        <div
-          className="settings-wrapper"
-          ref={settingsRef}
-          style={{ position: "relative" }}
-        >
+        {/* Settings */}
+        <div className="notif-bell-wrapper" ref={settingsRef}>
           <button
-            className="logo-link"
-            onClick={() => setSettingsOpen(!settingsOpen)}
+            className="nav-icon-btn"
+            onClick={() => {
+              setSettingsOpen((prev) => !prev);
+              setDropdownOpen(false);
+            }}
           >
-            <IoSettingsOutline className="nav-icon settings-gear" size={32} />
+            <IoSettingsOutline className="nav-icon settings-gear" size={24} />
           </button>
 
           {settingsOpen && (
-            <div
-              className="dropdown-menu"
-              style={{ position: "absolute", right: 0, zIndex: 10 }}
-            >
-              <button
-                onClick={() => {
-                  setSettingsOpen(false);
-                  navigate("/settings");
-                }}
+            <div className="notif-dropdown settings-dropdown">
+              <div className="notif-dropdown-header">
+                <span>Settings</span>
+              </div>
+              {settingsItems.map((item) => (
+                <div
+                  key={item.section}
+                  className="settings-dropdown-item"
+                  onClick={() => {
+                    setSettingsOpen(false);
+                    navigate("/settings", {
+                      state: { activeSection: item.section },
+                    });
+                  }}
+                >
+                  <span className="settings-dropdown-icon">{item.icon}</span>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+              <div className="settings-dropdown-divider" />
+              <div
+                className="settings-dropdown-item logout"
+                onClick={handleLogout}
               >
-                Settings
-              </button>
-              <button onClick={handleLogout} style={{ color: "red" }}>
-                Logout
-              </button>
+                <span className="settings-dropdown-icon">
+                  <LogOut size={15} />
+                </span>
+                <span>Logout</span>
+              </div>
             </div>
           )}
         </div>
 
-        <NavLink to="/profile" className="logo-link">
+        {/* Avatar + greeting */}
+        <NavLink to="/profile" className="logo-link navbar-avatar-wrap">
+          <span className="navbar-greeting">Hi, {firstName} 👋</span>
           <img
             src={navbarAvatar}
             alt="profile"
