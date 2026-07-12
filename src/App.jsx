@@ -56,7 +56,13 @@ export default function App() {
           path="/groups"
           element={<Groups currentTheme={theme} onThemeChange={setTheme} />}
         />
-        <Route path="/achievements" element={<Achievements />} />
+        <Route
+          path="/achievements"
+          element={
+            <Achievements currentTheme={theme} onThemeChange={setTheme} />
+          }
+        />
+
         <Route
           path="/profile"
           element={<Profile currentTheme={theme} onThemeChange={setTheme} />}

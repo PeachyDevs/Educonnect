@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Search, ChevronDown, Sun, Moon, X, LogOut } from "lucide-react";
 import profileImage from "../../images/eeh.jpg";
+import logo from "../../images/E.png";
 import { Shield, Bell, Palette, Settings, UserCircle } from "lucide-react";
 
 const previewNotifications = [
@@ -66,6 +67,7 @@ const searchSuggestions = [
 ];
 
 export default function NavbarApp({ currentTheme, onThemeChange }) {
+  // ...
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -141,10 +143,8 @@ export default function NavbarApp({ currentTheme, onThemeChange }) {
     s.label.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  const toggleTheme = () => {
-    if (typeof onThemeChange === "function") {
-      onThemeChange(currentTheme === "dark" ? "light" : "dark");
-    }
+  const handleThemeToggle = () => {
+    onThemeChange(currentTheme === "dark" ? "light" : "dark");
   };
 
   return (
@@ -153,7 +153,9 @@ export default function NavbarApp({ currentTheme, onThemeChange }) {
         {/* Left */}
         <div className="navbar-left">
           <Link to="/dashboard" className="logo-link">
-            <div className="logo-circle">E</div>
+            <div className="logo-circle">
+              <img src={logo} alt="EduConnect" />
+            </div>
             <div className="logo-text">
               <h2>EduConnect</h2>
               <span>Learn • Build • Grow</span>
@@ -230,8 +232,9 @@ export default function NavbarApp({ currentTheme, onThemeChange }) {
           </div>
 
           {/* Theme */}
-          <button className="icon-btn" onClick={toggleTheme}>
-            {currentTheme === "dark" ? <Moon size={20} /> : <Sun size={20} />}
+          {/* Theme toggle */}
+          <button className="icon-btn" onClick={handleThemeToggle}>
+            {currentTheme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
           </button>
 
           {/* Settings */}
