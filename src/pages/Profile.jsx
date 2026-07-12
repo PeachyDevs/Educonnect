@@ -4,7 +4,7 @@ import Navbar from "../components/Navbarapp.jsx";
 import Sidebar from "../../src/components/Sidebar.jsx";
 import profileImage from "../../images/eeh.jpg";
 
-export default function Profile() {
+export default function Profile({ currentTheme, onThemeChange }) {
   const [profileData, setProfileData] = useState(() => {
     try {
       const saved = localStorage.getItem("educonnect_profile_text");
@@ -104,7 +104,7 @@ export default function Profile() {
 
   return (
     <>
-      <Navbar />
+      <Navbar currentTheme={currentTheme} toggleTheme={onThemeChange} />
       <div className="container">
         <Sidebar />
         <main className="main-content">

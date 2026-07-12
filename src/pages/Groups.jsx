@@ -2,13 +2,13 @@ import Navbar from "../components/Navbarapp.jsx";
 import Sidebar from "../../src/components/Sidebar.jsx";
 import { useState } from "react"; // Added useState
 
-export default function Groups() {
+export default function Groups({ currentTheme, onThemeChange }) {
   // 1. Initialize state to track which tab is clicked
   const [activeTab, setActiveTab] = useState("My Groups");
 
   return (
     <>
-      <Navbar />
+      <Navbar currentTheme={currentTheme} toggleTheme={onThemeChange} />
       <div className="container">
         <Sidebar />
         <main className="main-content">

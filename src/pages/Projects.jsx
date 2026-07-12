@@ -3,7 +3,7 @@ import Sidebar from "../../src/components/Sidebar.jsx";
 import { useState, useRef } from "react";
 import { Search, X } from "lucide-react";
 
-export default function Projects() {
+export default function Projects({ currentTheme, onThemeChange }) {
   const ALL_PROJECTS = [
     {
       name: "Sales Data Dashboard",
@@ -35,7 +35,7 @@ export default function Projects() {
 
   return (
     <>
-      <Navbar />
+      <Navbar currentTheme={currentTheme} toggleTheme={onThemeChange} />
       <div className="container">
         <Sidebar />
         <main className="main-content">

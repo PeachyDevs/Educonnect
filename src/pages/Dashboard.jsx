@@ -3,7 +3,7 @@ import Sidebar from "../../src/components/Sidebar.jsx";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Dashboard() {
+export default function Dashboard({ currentTheme, onThemeChange }) {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
@@ -35,7 +35,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Navbar />
+      <Navbar currentTheme={currentTheme} toggleTheme={onThemeChange} />
       <div className="container">
         <Sidebar />
         <main className="main-content">

@@ -108,7 +108,7 @@ export default function Settings({ currentTheme, onThemeChange }) {
 
   return (
     <>
-      <Navbar />
+      <Navbar currentTheme={currentTheme} toggleTheme={onThemeChange} />
       <div
         className={`settings-container ${activeTab ? "split-view" : "centered-view"}`}
       >

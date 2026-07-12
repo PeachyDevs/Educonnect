@@ -48,7 +48,7 @@ const ALL_PATHS = [
   },
 ];
 
-export default function Learning() {
+export default function Learning({ currentTheme, onThemeChange }) {
   const [activeTab, setActiveTab] = useState("All");
   const [query, setQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -76,7 +76,7 @@ export default function Learning() {
 
   return (
     <>
-      <Navbar />
+      <Navbar currentTheme={currentTheme} toggleTheme={onThemeChange} />
       <div className="container">
         <Sidebar />
         <main className="main-content">

@@ -40,14 +40,33 @@ export default function App() {
           <Route path="auth/login" element={<Login />} />
           <Route path="auth/signup" element={<Signup />} />
         </Route>
-
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/learning" element={<Learning />} />
-        <Route path="/project" element={<Projects />} />
-        <Route path="/groups" element={<Groups />} />
+        <Route
+          path="/dashboard"
+          element={<Dashboard currentTheme={theme} onThemeChange={setTheme} />}
+        />
+        <Route
+          path="/learning"
+          element={<Learning currentTheme={theme} onThemeChange={setTheme} />}
+        />
+        <Route
+          path="/project"
+          element={<Projects currentTheme={theme} onThemeChange={setTheme} />}
+        />
+        <Route
+          path="/groups"
+          element={<Groups currentTheme={theme} onThemeChange={setTheme} />}
+        />
         <Route path="/achievements" element={<Achievements />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/notifications" element={<Notifications />} />
+        <Route
+          path="/profile"
+          element={<Profile currentTheme={theme} onThemeChange={setTheme} />}
+        />
+        <Route
+          path="/notifications"
+          element={
+            <Notifications currentTheme={theme} onThemeChange={setTheme} />
+          }
+        />
         <Route path="auth/reset-password" element={<ResetPassword />} />
         <Route path="auth/forgot-password" element={<ForgotPassword />} />
         <Route path="/username" element={<Username />} />

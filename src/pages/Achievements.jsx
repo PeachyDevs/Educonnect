@@ -1,10 +1,10 @@
 import Navbar from "../components/Navbarapp.jsx";
 import Sidebar from "../../src/components/Sidebar.jsx";
 
-export default function Achievements() {
+export default function Achievements({ currentTheme, onThemeChange }) {
   return (
     <>
-      <Navbar />
+      <Navbar currentTheme={currentTheme} toggleTheme={onThemeChange} />
       <div className="container">
         <Sidebar />
         <main className="main-content">

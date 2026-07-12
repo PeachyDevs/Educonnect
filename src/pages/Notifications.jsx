@@ -41,7 +41,7 @@ const INITIAL_NOTIFICATIONS = [
   },
 ];
 
-export default function Notifications({ currentTheme }) {
+export default function Learning({ currentTheme, onThemeChange }) {
   const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS);
   const [activeFilter, setActiveFilter] = useState("all");
 
@@ -68,7 +68,7 @@ export default function Notifications({ currentTheme }) {
 
   return (
     <>
-      <Navbar currentTheme={currentTheme} />
+      <Navbar currentTheme={currentTheme} toggleTheme={onThemeChange} />
 
       <div className="notifications-layout-container">
         {/* Left Sidebar Filters */}
