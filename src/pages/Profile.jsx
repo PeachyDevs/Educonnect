@@ -104,7 +104,7 @@ export default function Profile({ currentTheme, onThemeChange }) {
 
   return (
     <>
-      <Navbar currentTheme={currentTheme} toggleTheme={onThemeChange} />
+      <Navbar currentTheme={currentTheme} onThemeChange={onThemeChange} />
       <div className="container">
         <Sidebar />
         <main className="main-content">

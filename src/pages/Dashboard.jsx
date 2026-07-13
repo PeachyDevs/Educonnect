@@ -2,6 +2,7 @@ import Navbarapp from "../components/Navbarapp.jsx";
 import Sidebar from "../../src/components/Sidebar.jsx";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbarapp.jsx";
 
 export default function Dashboard({ currentTheme, onThemeChange }) {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function Dashboard({ currentTheme, onThemeChange }) {
 
   return (
     <>
-      <Navbarapp currentTheme={currentTheme} onThemeChange={onThemeChange} />
+      <Navbar currentTheme={currentTheme} onThemeChange={onThemeChange} />
       <div className="container">
         <Sidebar />
         <main className="main-content">

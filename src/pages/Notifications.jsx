@@ -68,8 +68,7 @@ export default function Learning({ currentTheme, onThemeChange }) {
 
   return (
     <>
-      <Navbar currentTheme={currentTheme} toggleTheme={onThemeChange} />
-
+      <Navbar currentTheme={currentTheme} onThemeChange={onThemeChange} />
       <div className="notifications-layout-container">
         {/* Left Sidebar Filters */}
         <aside className="notif-sidebar card">
