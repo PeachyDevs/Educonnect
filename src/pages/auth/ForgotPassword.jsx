@@ -14,7 +14,7 @@ export default function ForgotPassword() {
 
     try {
       const response = await fetch(
-        "https://server-js-0703.onrender.com/auth/request-reset",
+        `${import.meta.env.VITE_API_URL}/auth/request-reset`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
