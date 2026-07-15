@@ -1,34 +1,98 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
+import {
+  LayoutDashboard,
+  BookOpen,
+  FolderKanban,
+  Users,
+  Trophy,
+  Target,
+  ChevronRight,
+} from "lucide-react";
+
+const weeklyProgress = 68;
 
 const menuItems = [
-  { label: 'Dashboard', to: '/dashboard', icon: '📊' },
-  { label: 'My Courses', to: '/learning', icon: '📚' },
-  { label: 'My Projects', to: '/project', icon: '🗂️' },
-  { label: 'My Groups', to: '/groups', icon: '👫🏻' },
-  { label: 'Achievements', to: '/achievements', icon: '🏆' }
+  {
+    label: "Dashboard",
+    to: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    label: "My Courses",
+    to: "/learning",
+    icon: BookOpen,
+  },
+  {
+    label: "My Projects",
+    to: "/project",
+    icon: FolderKanban,
+  },
+  {
+    label: "My Groups",
+    to: "/groups",
+    icon: Users,
+  },
+  {
+    label: "Achievements",
+    to: "/achievements",
+    icon: Trophy,
+  },
 ];
 
 export default function Sidebar() {
   return (
-    <aside className="card menu">
-      <h3>Menu</h3>
-      {menuItems.map((item) => (
-        <NavLink
-          key={item.to}
-          to={item.to}
-          className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}
-        >
-          <span className="menu-icon">{item.icon}</span>
-          <span>{item.label}</span>
-        </NavLink>
-      ))}
-      <div className="menu-divider"></div>
-      <div className="menu-progress">
-        <p className="progress-label">Weekly Goal</p>
-        <div className="progress-bar-wrap">
-          <div className="progress-bar-fill w-68"></div>
+    <aside className="sidebar">
+      <div className="sidebar-header">
+        <h2>Workspace</h2>
+
+        <p>Your learning hub</p>
+      </div>
+
+      <nav className="sidebar-menu">
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                `menu-item ${isActive ? "active" : ""}`
+              }
+            >
+              <div className="menu-left">
+                <Icon size={19} />
+
+                <span>{item.label}</span>
+              </div>
+
+              <ChevronRight size={16} className="arrow" />
+            </NavLink>
+          );
+        })}
+      </nav>
+
+      <div className="sidebar-divider"></div>
+
+      <div className="goal-card">
+        <div className="goal-title">
+          <Target size={18} />
+
+          <span>Weekly Goal</span>
         </div>
-        <p className="progress-pct">68% complete</p>
+
+        <div className="progress-bar">
+          <div
+            className="progress-fill"
+            style={{ width: `${weeklyProgress}%` }}
+          ></div>
+        </div>
+
+        <div className="goal-footer">
+          <span>{weeklyProgress}% Complete</span>
+
+          <strong>17 / 25 hrs</strong>
+        </div>
       </div>
     </aside>
   );
