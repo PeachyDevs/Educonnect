@@ -29,7 +29,7 @@ export default function Signup() {
 
     try {
       const response = await fetch(
-        "https://server-js-0703.onrender.com/auth/register",
+        `${import.meta.env.VITE_API_URL}/auth/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

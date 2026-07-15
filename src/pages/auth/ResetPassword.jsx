@@ -32,7 +32,7 @@ export default function ResetPassword() {
 
     try {
       const response = await fetch(
-        "https://server-js-0703.onrender.com/auth/reset-password",
+        `${import.meta.env.VITE_API_URL}/auth/reset-password`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
