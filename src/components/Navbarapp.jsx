@@ -1,9 +1,27 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Search, ChevronDown, Sun, Moon, X, LogOut } from "lucide-react";
+// Merged all Lucide icons into a single import statement
+import {
+  Search,
+  ChevronDown,
+  Sun,
+  Moon,
+  X,
+  LogOut,
+  Menu,
+  Shield,
+  Bell,
+  Palette,
+  Settings,
+  UserCircle,
+  LayoutDashboard,
+  BookOpen,
+  FolderOpen,
+  Users,
+  Trophy,
+} from "lucide-react";
 import profileImage from "../../images/eeh.jpg";
 import logo from "../../images/E.png";
-import { Shield, Bell, Palette, Settings, UserCircle } from "lucide-react";
 
 const previewNotifications = [
   {
@@ -44,6 +62,19 @@ const settingsItems = [
   { label: "Themes", icon: <Palette size={15} />, section: "themes" },
 ];
 
+const navLinks = [
+  {
+    label: "Dashboard",
+    path: "/dashboard",
+    icon: <LayoutDashboard size={18} />,
+  },
+  { label: "My Courses", path: "/learning", icon: <BookOpen size={18} /> },
+  { label: "My Projects", path: "/project", icon: <FolderOpen size={18} /> },
+  { label: "My Groups", path: "/groups", icon: <Users size={18} /> },
+  { label: "Achievements", path: "/achievements", icon: <Trophy size={18} /> },
+  { label: "Settings", path: "/settings", icon: <Settings size={18} /> },
+];
+
 const pageNames = {
   "/dashboard": "Dashboard",
   "/learning": "My Courses",
@@ -67,12 +98,12 @@ const searchSuggestions = [
 ];
 
 export default function NavbarApp({ currentTheme, onThemeChange }) {
-  // ...
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [readIds, setReadIds] = useState(() =>
     JSON.parse(localStorage.getItem("educonnect_read_notifs") || "[]"),
   );
@@ -81,6 +112,7 @@ export default function NavbarApp({ currentTheme, onThemeChange }) {
   const profileRef = useRef(null);
   const settingsRef = useRef(null);
   const searchRef = useRef(null);
+  const drawerRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -121,6 +153,27 @@ export default function NavbarApp({ currentTheme, onThemeChange }) {
         setSearchOpen(false);
         setSearchQuery("");
       }
+      if (drawerRef.current && !drawerRef.current.contains(e.target))
+        setDrawerOpen(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (notifRef.current && !notifRef.current.contains(e.target))
+        setNotificationOpen(false);
+      if (profileRef.current && !profileRef.current.contains(e.target))
+        setProfileOpen(false);
+      if (settingsRef.current && !settingsRef.current.contains(e.target))
+        setSettingsOpen(false);
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setSearchOpen(false);
+        setSearchQuery("");
+      }
+      if (drawerRef.current && !drawerRef.current.contains(e.target))
+        setDrawerOpen(false); // 👈 LOOK CLOSELY HERE!
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -150,8 +203,17 @@ export default function NavbarApp({ currentTheme, onThemeChange }) {
   return (
     <>
       <header className="navbar">
-        {/* Left */}
+        {/* ── LEFT ── */}
         <div className="navbar-left">
+          {/* Hamburger — mobile only */}
+          <button
+            className="hamburger-btn"
+            onClick={() => setDrawerOpen((prev) => !prev)}
+            aria-label="Open menu"
+          >
+            <Menu size={22} />
+          </button>
+
           <Link to="/dashboard" className="logo-link">
             <div className="logo-circle">
               <img src={logo} alt="EduConnect" />
@@ -167,7 +229,7 @@ export default function NavbarApp({ currentTheme, onThemeChange }) {
           </div>
         </div>
 
-        {/* Center */}
+        {/* ── CENTER — desktop only ── */}
         <div className="navbar-center">
           <button
             className="navbar-search-trigger"
@@ -181,8 +243,16 @@ export default function NavbarApp({ currentTheme, onThemeChange }) {
           </button>
         </div>
 
-        {/* Right */}
+        {/* ── RIGHT ── */}
         <div className="navbar-right">
+          {/* Search icon — mobile only */}
+          <button
+            className="icon-btn mobile-search-btn"
+            onClick={() => setSearchOpen(true)}
+          >
+            <Search size={20} />
+          </button>
+
           {/* Notifications */}
           <div className="navbar-action" ref={notifRef}>
             <button className="icon-btn" onClick={handleBellClick}>
@@ -191,7 +261,6 @@ export default function NavbarApp({ currentTheme, onThemeChange }) {
                 <span className="notification-badge">{unreadCount}</span>
               )}
             </button>
-
             {notificationOpen && (
               <div className="nav-dropdown notif-dropdown">
                 <div className="nav-dropdown-header">
@@ -231,14 +300,13 @@ export default function NavbarApp({ currentTheme, onThemeChange }) {
             )}
           </div>
 
-          {/* Theme */}
-          {/* Theme toggle */}
-          <button className="icon-btn" onClick={handleThemeToggle}>
+          {/* Theme — desktop only */}
+          <button className="icon-btn desktop-only" onClick={handleThemeToggle}>
             {currentTheme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
           </button>
 
-          {/* Settings */}
-          <div className="navbar-action" ref={settingsRef}>
+          {/* Settings — desktop only */}
+          <div className="navbar-action desktop-only" ref={settingsRef}>
             <button
               className="icon-btn"
               onClick={() => {
@@ -249,7 +317,6 @@ export default function NavbarApp({ currentTheme, onThemeChange }) {
             >
               <Settings size={20} />
             </button>
-
             {settingsOpen && (
               <div className="nav-dropdown settings-dropdown">
                 <div className="nav-dropdown-header">
@@ -299,15 +366,14 @@ export default function NavbarApp({ currentTheme, onThemeChange }) {
                 alt="Profile"
                 className="profile-avatar"
               />
-              <div className="profile-info">
+              <div className="profile-info desktop-only">
                 <strong>{firstName}</strong>
                 <span>
                   {user.role === "mentor" ? "Mentor" : "Software Student"}
                 </span>
               </div>
-              <ChevronDown size={18} />
+              <ChevronDown size={18} className="desktop-only" />
             </div>
-
             {profileOpen && (
               <div className="nav-dropdown profile-dropdown">
                 <div className="nav-dropdown-header">
@@ -354,6 +420,95 @@ export default function NavbarApp({ currentTheme, onThemeChange }) {
           </div>
         </div>
       </header>
+
+      {/* ── MOBILE DRAWER ── */}
+      {drawerOpen && (
+        <div className="drawer-overlay" onClick={() => setDrawerOpen(false)}>
+          <div
+            className="drawer"
+            ref={drawerRef} /* 👈 ADD THIS REF HERE */
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Drawer Header */}
+            <div className="drawer-header">
+              <div className="drawer-user">
+                <img
+                  src={navbarAvatar}
+                  alt="avatar"
+                  className="drawer-avatar"
+                />
+                <div>
+                  <p className="drawer-name">{firstName}</p>
+                  <p className="drawer-role">
+                    {user.role === "mentor" ? "Mentor" : "Software Student"}
+                  </p>
+                </div>
+              </div>
+              <button
+                className="drawer-close"
+                onClick={() => setDrawerOpen(false)}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Nav Links */}
+            <div className="drawer-section">
+              <p className="drawer-section-label">Navigation</p>
+              {navLinks.map((link) => (
+                <div
+                  key={link.path}
+                  className={`drawer-item ${location.pathname === link.path ? "active" : ""}`}
+                  onClick={() => {
+                    navigate(link.path);
+                    setDrawerOpen(false);
+                  }}
+                >
+                  <span className="drawer-item-icon">{link.icon}</span>
+                  <span>{link.label}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Theme Toggle */}
+            <div className="drawer-section">
+              <p className="drawer-section-label">Appearance</p>
+              <div className="drawer-theme-toggle">
+                <div className="drawer-item-icon">
+                  {currentTheme === "dark" ? (
+                    <Sun size={18} />
+                  ) : (
+                    <Moon size={18} />
+                  )}
+                </div>
+                <span>
+                  {currentTheme === "dark" ? "Light Mode" : "Dark Mode"}
+                </span>
+                <button
+                  className="drawer-theme-btn"
+                  onClick={handleThemeToggle}
+                >
+                  <div
+                    className={`theme-switch ${currentTheme === "dark" ? "on" : ""}`}
+                  >
+                    <div className="theme-switch-thumb" />
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            {/* Logout */}
+            <div className="drawer-footer">
+              <div className="drawer-item logout" onClick={handleLogout}>
+                <span className="drawer-item-icon">
+                  <LogOut size={18} />
+                </span>
+                <span>Logout</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Search Modal */}
       {searchOpen && (

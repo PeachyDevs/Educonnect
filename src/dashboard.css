@@ -3814,4 +3814,579 @@
       grid-template-columns: repeat(2, 1fr);
     }
   }
+
+  /* ── MOBILE NAVBAR ── */
+  .hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-primary);
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s;
+  }
+
+  .hamburger-btn:hover {
+    background: var(--search-hover);
+  }
+
+  .mobile-search-btn {
+    display: none;
+  }
+
+  .desktop-only {
+    display: flex;
+  }
+
+  /* ── DRAWER ── */
+  .drawer-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+  }
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    animation: slideInLeft 0.25s ease;
+  }
+
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .drawer-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .drawer-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border);
+  }
+
+  .drawer-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+
+  .drawer-role {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .drawer-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 6px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s;
+  }
+
+  .drawer-close:hover {
+    background: var(--bg-page);
+  }
+
+  .drawer-section {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .drawer-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .drawer-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-mid);
+    transition:
+      background 0.2s,
+      color 0.2s;
+    margin-bottom: 2px;
+  }
+
+  .drawer-item:hover {
+    background: var(--blue-light);
+    color: var(--blue);
+  }
+  .drawer-item.active {
+    background: var(--blue);
+    color: #fff;
+  }
+  .drawer-item.logout {
+    color: #dc2626;
+  }
+  .drawer-item.logout:hover {
+    background: rgba(220, 38, 38, 0.08);
+    color: #dc2626;
+  }
+
+  .drawer-item-icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .drawer-theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    color: var(--text-mid);
+  }
+
+  .drawer-theme-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 0;
+  }
+
+  .theme-switch {
+    width: 44px;
+    height: 24px;
+    border-radius: 99px;
+    background: var(--border);
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .theme-switch.on {
+    background: var(--blue);
+  }
+
+  .theme-switch-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    transition: transform 0.3s;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .theme-switch.on .theme-switch-thumb {
+    transform: translateX(20px);
+  }
+
+  .drawer-footer {
+    padding: 16px;
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .hamburger-btn {
+      display: flex;
+    }
+    .mobile-search-btn {
+      display: flex;
+    }
+    .desktop-only {
+      display: none !important;
+    }
+    .drawer-overlay {
+      display: block;
+    }
+    .navbar-center {
+      display: none;
+    }
+    .page-divider {
+      display: none;
+    }
+    .page-info {
+      display: none;
+    }
+    .logo-text span {
+      display: none;
+    }
+
+    .navbar {
+      padding: 0 16px;
+      height: 60px;
+    }
+
+    .navbar-right {
+      gap: 4px;
+    }
+
+    .nav-dropdown {
+      right: -8px;
+      min-width: 260px;
+    }
+
+    .notif-dropdown {
+      min-width: 300px;
+      right: -60px;
+    }
+
+    .profile-dropdown {
+      min-width: 200px;
+    }
+  }
+
+  [data-theme="dark"] .drawer {
+    background: #1e293b;
+    border-color: #334155;
+  }
+
+  [data-theme="dark"] .drawer-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+
+  [data-theme="dark"] .drawer-item.active {
+    background: #4e73da;
+    color: #ffffff;
+  }
+
+  [data-theme="dark"] .drawer-item.logout:hover {
+    background: rgba(220, 38, 38, 0.15);
+  }
+  @media (max-width: 768px) {
+    /* 1. Remove the left sidebar from the view entirely */
+    .sidebar {
+      display: none !important;
+    }
+
+    /* 2. Re-arrange the grid areas so the right panel goes to the absolute bottom,
+        and allow 100% width on all sections */
+    .container {
+      display: grid !important;
+      grid-template-columns: 100% !important; /* Forces full width */
+      grid-template-areas:
+        "main"
+        "trending"
+        "right-panel" !important; /* 'right-panel' is now placed strictly at the bottom */
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 16px !important;
+      gap: 24px !important;
+    }
+
+    /* 3. Ensure the main block and right panel take full width of the screen */
+    .main,
+    .right-panel {
+      width: 100% !important;
+      max-width: 100% !important;
+      grid-column: 1 / -1 !important; /* Span across the whole screen width */
+    }
+  }
+
+  /* ==========================================================================
+   SETTINGS LAYOUT & RESPONSIVE UI SPACING FIXES
+   ========================================================================== */
+
+  /* Fix Input Elements Overlapping (Image 3 Fix) */
+  .input-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin-bottom: 20px !important;
+  }
+
+  .input-group label {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: var(--text) !important;
+    margin-bottom: 4px !important;
+    align-self: flex-start !important;
+  }
+
+  .settings-input {
+    width: 100% !important;
+    padding: 12px 14px !important;
+    font-size: 15px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Fix Bio Area Alignment Spacing */
+  .bio-area {
+    resize: vertical !important;
+    min-height: 100px !important;
+  }
+
+  /* Ensure Desktop Styling Remains Intact */
+  @media (min-width: 769px) {
+    .settings-mobile-back-btn {
+      display: none !important;
+    }
+  }
+
+  /* ── Mobile View Overrides (Image 1, Image 3 & Alignment Fixes) ── */
+  @media (max-width: 768px) {
+    .settings-container {
+      display: flex !important;
+      flex-direction: column !important;
+      padding: 16px !important;
+      gap: 16px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Image 1 Fix: Forces the Menu buttons to stack vertically with proper margins */
+    .settings-container.mobile-view-menu .card.menu {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100% !important;
+      gap: 12px !important;
+      padding: 24px 16px !important;
+      background-color: var(--bg-card) !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Style each Menu item inside the vertical stack with breathing room */
+    .settings-container.mobile-view-menu .menu-item {
+      display: block !important;
+      width: 100% !important;
+      padding: 14px 16px !important;
+      text-align: center !important;
+      border-radius: 8px !important;
+      margin: 0 !important;
+      cursor: pointer;
+      box-sizing: border-box !important;
+    }
+
+    /* Toggle display logic for clean layout shifts */
+    .settings-container.mobile-view-menu .content-box {
+      display: none !important; /* Hide content while viewing menu list */
+    }
+
+    .settings-container.mobile-view-content .card.menu {
+      display: none !important; /* Hide menu while viewing chosen tab panel */
+    }
+
+    .settings-container.mobile-view-content .content-box {
+      display: block !important;
+      width: 100% !important;
+      padding: 24px 16px !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Navigation Back button style */
+    .settings-mobile-back-btn {
+      display: inline-flex !important;
+      align-items: center;
+      gap: 8px;
+      background: none !important;
+      border: none !important;
+      color: #2563eb !important; /* Adjust default color as needed */
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      margin-bottom: 20px !important;
+      padding: 8px 0 !important;
+      text-decoration: none !important;
+    }
+
+    /* Fix spacing inside general profile container layouts on small viewports */
+    .profile-settings-editor {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 16px !important;
+      width: 100% !important;
+    }
+  }
+  /* Container adjustment - removing the old grid setup since sidebar is gone */
+  .notifications-layout-container {
+    max-width: 800px;
+    margin: 24px auto;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  .notif-feed.card {
+    background: var(--bg-card, #ffffff);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Horizontal Tab Bar Navigation Container */
+  .notif-tab-bar {
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+    border-bottom: 1px solid var(--border, #e2e8f0);
+    overflow-x: auto;
+    scrollbar-width: none; /* Hide scrollbars on mobile Firefox */
+  }
+  .notif-tab-bar::-webkit-scrollbar {
+    display: none; /* Hide scrollbars on mobile Chrome/Safari */
+  }
+
+  /* Tab buttons styling */
+  .notif-tab-btn {
+    background: none;
+    border: none;
+    padding: 12px 4px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-muted, #64748b);
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+
+  .notif-tab-btn:hover {
+    color: var(--text, #1e293b);
+  }
+
+  /* Selected item styling - The colored active underline bar ("Love Bar") */
+  .notif-tab-btn.active {
+    color: #3b82f6; /* Modern Blue, or replace with your primary theme color */
+  }
+
+  .notif-tab-btn.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #3b82f6; /* Matching accent color for the bar */
+    border-radius: 3px 3px 0 0;
+  }
+
+  /* Divider margin reset for clean separation */
+  .divider {
+    border: 0;
+    border-top: 1px solid var(--border, #e2e8f0);
+    margin: 16px 0 20px 0;
+  }
+
+  /* Read / Unread Status Dots */
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 8px;
+  }
+
+  /* Unread State: Red Dot */
+  .status-dot.unread-dot {
+    background-color: #ef4444; /* Alert Red */
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+  }
+
+  /* Read State: Subtle Dark Blue/Gray border circle */
+  .status-dot.read-dot {
+    background-color: transparent;
+    border: 1px solid var(--text-muted, #94a3b8);
+  }
+
+  /* Make card interactive and slightly dim already-read cards for readability */
+  .notif-card {
+    transition: all 0.2s ease;
+  }
+  .notif-card.read {
+    opacity: 0.75;
+  }
+  .notif-card.read:hover {
+    opacity: 1;
+  }
+  /* Container layout for action buttons on friend requests */
+  .notif-actions-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  /* Accept Button */
+  .friend-btn-accept {
+    background-color: #22c55e !important; /* Success Green */
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 6px 16px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: opacity 0.15s ease !important;
+  }
+
+  .friend-btn-accept:hover {
+    opacity: 0.9 !important;
+  }
+
+  /* Decline Button */
+  .friend-btn-decline {
+    background-color: transparent !important;
+    color: var(--text-muted, #64748b) !important;
+    border: 1px solid var(--border, #cbd5e1) !important;
+    border-radius: 6px !important;
+    padding: 6px 16px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+  }
+
+  .friend-btn-decline:hover {
+    background-color: rgba(
+      239,
+      68,
+      68,
+      0.08
+    ) !important; /* Soft red hover tint */
+    color: #ef4444 !important; /* Alert red */
+    border-color: #ef4444 !important;
+  }
 } /* end @layer base */
