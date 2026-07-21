@@ -1,15 +1,107 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User } from "lucide-react";
+import {
+  User,
+  GraduationCap,
+  BookOpen,
+  Target,
+  MapPin,
+  Briefcase,
+  Clock,
+  Sparkles,
+  CheckCircle,
+  Rocket,
+  ArrowLeft,
+  ArrowRight,
+} from "lucide-react";
+
+// Custom Teacher / Facilitator SVG Icon
+const FacilitatorIcon = ({ size = 20, color = "currentColor" }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+    <path d="M18 8l3-3" />
+    <path d="M21 5v3" />
+  </svg>
+);
+
+// Static Options
+const STUDENT_INTERESTS = [
+  "Python",
+  "Data Science",
+  "UI/UX",
+  "Web Dev",
+  "Machine Learning",
+  "Business",
+  "Design",
+  "Mobile Dev",
+];
+
+const MENTOR_EXPERTISE = [
+  "Python",
+  "Data Science",
+  "UI/UX",
+  "Web Dev",
+  "Machine Learning",
+  "Business Writing",
+  "React",
+  "Node.js",
+];
+
+const LEARNING_STYLES = [
+  "Visual",
+  "Reading/Writing",
+  "Hands-on",
+  "Group Learning",
+];
+
+const TEACHING_STYLES = [
+  "Structured lessons",
+  "Project-based",
+  "Q&A sessions",
+  "Mentorship calls",
+];
+
+const AVAILABILITY_OPTIONS = [
+  "Weekdays",
+  "Weekends",
+  "Evenings only",
+  "Flexible",
+];
+
+const WEEKLY_GOALS = ["2 hrs/week", "4 hrs/week", "6 hrs/week", "8+ hrs/week"];
+const GRADE_LEVELS = ["Beginner", "Intermediate", "Advanced"];
 
 export default function ProfileSetup() {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  // Safe localStorage parsing
+  const user = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("user") || "{}");
+    } catch {
+      return {};
+    }
+  })();
+
   const role = user.role || "student";
+  const totalSteps = 4;
 
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    fullName: user.first_name ? `${user.first_name} ${user.last_name}` : "",
+    fullName:
+      user.first_name && user.last_name
+        ? `${user.first_name} ${user.last_name}`
+        : user.first_name || "",
     dob: "",
     location: "",
     avatar: null,
@@ -28,14 +120,12 @@ export default function ProfileSetup() {
     teachingStyle: "",
   });
 
-  const totalSteps = 4;
-
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -69,7 +159,6 @@ export default function ProfileSetup() {
   };
 
   const handleFinish = () => {
-    // Save profile to localStorage
     const profileText = {
       name: formData.fullName,
       handle: formData.location,
@@ -86,46 +175,7 @@ export default function ProfileSetup() {
     navigate("/dashboard");
   };
 
-  const studentInterests = [
-    "Python",
-    "Data Science",
-    "UI/UX",
-    "Web Dev",
-    "Machine Learning",
-    "Business",
-    "Design",
-    "Mobile Dev",
-  ];
-  const mentorExpertise = [
-    "Python",
-    "Data Science",
-    "UI/UX",
-    "Web Dev",
-    "Machine Learning",
-    "Business Writing",
-    "React",
-    "Node.js",
-  ];
-  const learningStyles = [
-    "Visual",
-    "Reading/Writing",
-    "Hands-on",
-    "Group Learning",
-  ];
-  const teachingStyles = [
-    "Structured lessons",
-    "Project-based",
-    "Q&A sessions",
-    "Mentorship calls",
-  ];
-  const availabilityOptions = [
-    "Weekdays",
-    "Weekends",
-    "Evenings only",
-    "Flexible",
-  ];
-  const weeklyGoals = ["2 hrs/week", "4 hrs/week", "6 hrs/week", "8+ hrs/week"];
-  const gradeLevels = ["Beginner", "Intermediate", "Advanced"];
+  const firstName = formData.fullName.trim().split(" ")[0] || "there";
 
   return (
     <div
@@ -137,6 +187,7 @@ export default function ProfileSetup() {
         justifyContent: "center",
         padding: "24px",
         fontFamily: "'Plus Jakarta Sans', sans-serif",
+        boxSizing: "border-box",
       }}
     >
       <div
@@ -196,24 +247,15 @@ export default function ProfileSetup() {
           {/* STEP 1 — Basic Info */}
           {step === 1 && (
             <div>
-              <h2
-                style={{
-                  fontFamily: "'Sora', sans-serif",
-                  fontSize: "1.5rem",
-                  fontWeight: "800",
-                  color: "#111827",
-                  marginBottom: "6px",
-                }}
-              >
-                Let's set up your profile 👋
+              <h2 style={headStyle}>
+                Let's set up your profile{" "}
+                <Sparkles
+                  size={22}
+                  color="#2563eb"
+                  style={{ display: "inline-block", verticalAlign: "middle" }}
+                />
               </h2>
-              <p
-                style={{
-                  color: "#6b7280",
-                  fontSize: "14px",
-                  marginBottom: "28px",
-                }}
-              >
+              <p style={subStyle}>
                 Tell us a bit about yourself to get started.
               </p>
 
@@ -237,14 +279,13 @@ export default function ProfileSetup() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontSize: "2rem",
                     overflow: "hidden",
                     marginBottom: "12px",
                     border: "3px solid #e2e8f0",
                     cursor: "pointer",
                   }}
                   onClick={() =>
-                    document.getElementById("avatar-upload").click()
+                    document.getElementById("avatar-upload")?.click()
                   }
                 >
                   {formData.avatarPreview ? (
@@ -269,8 +310,9 @@ export default function ProfileSetup() {
                   style={{ display: "none" }}
                 />
                 <button
+                  type="button"
                   onClick={() =>
-                    document.getElementById("avatar-upload").click()
+                    document.getElementById("avatar-upload")?.click()
                   }
                   style={{
                     fontSize: "13px",
@@ -326,7 +368,14 @@ export default function ProfileSetup() {
           {/* STEP 2 — Student Profile */}
           {step === 2 && role === "student" && (
             <div>
-              <h2 style={headStyle}>Your student profile 🎓</h2>
+              <h2 style={headStyle}>
+                Your student profile{" "}
+                <GraduationCap
+                  size={22}
+                  color="#2563eb"
+                  style={{ display: "inline-block", verticalAlign: "middle" }}
+                />
+              </h2>
               <p style={subStyle}>
                 Help us personalize your learning experience.
               </p>
@@ -351,8 +400,9 @@ export default function ProfileSetup() {
                   <div
                     style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}
                   >
-                    {gradeLevels.map((g) => (
+                    {GRADE_LEVELS.map((g) => (
                       <button
+                        type="button"
                         key={g}
                         onClick={() => handleChange("gradeLevel", g)}
                         style={chipStyle(formData.gradeLevel === g)}
@@ -369,8 +419,9 @@ export default function ProfileSetup() {
                   <div
                     style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
                   >
-                    {studentInterests.map((i) => (
+                    {STUDENT_INTERESTS.map((i) => (
                       <button
+                        type="button"
                         key={i}
                         onClick={() => toggleArrayItem("interests", i)}
                         style={chipStyle(formData.interests.includes(i))}
@@ -387,7 +438,10 @@ export default function ProfileSetup() {
           {/* STEP 2 — Mentor Profile */}
           {step === 2 && role === "mentor" && (
             <div>
-              <h2 style={headStyle}>Your mentor profile 👨‍🏫</h2>
+              <h2 style={headStyle}>
+                Your mentor profile{" "}
+                <FacilitatorIcon size={22} color="#2563eb" />
+              </h2>
               <p style={subStyle}>Tell students what you bring to the table.</p>
               <div
                 style={{
@@ -403,8 +457,9 @@ export default function ProfileSetup() {
                   <div
                     style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
                   >
-                    {mentorExpertise.map((e) => (
+                    {MENTOR_EXPERTISE.map((e) => (
                       <button
+                        type="button"
                         key={e}
                         onClick={() => toggleArrayItem("expertise", e)}
                         style={chipStyle(formData.expertise.includes(e))}
@@ -447,7 +502,14 @@ export default function ProfileSetup() {
           {/* STEP 3 — Student Preferences */}
           {step === 3 && role === "student" && (
             <div>
-              <h2 style={headStyle}>Your learning preferences 📚</h2>
+              <h2 style={headStyle}>
+                Your learning preferences{" "}
+                <BookOpen
+                  size={22}
+                  color="#2563eb"
+                  style={{ display: "inline-block", verticalAlign: "middle" }}
+                />
+              </h2>
               <p style={subStyle}>
                 We'll use this to personalize your dashboard.
               </p>
@@ -463,8 +525,9 @@ export default function ProfileSetup() {
                   <div
                     style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
                   >
-                    {learningStyles.map((s) => (
+                    {LEARNING_STYLES.map((s) => (
                       <button
+                        type="button"
                         key={s}
                         onClick={() => handleChange("learningStyle", s)}
                         style={chipStyle(formData.learningStyle === s)}
@@ -479,8 +542,9 @@ export default function ProfileSetup() {
                   <div
                     style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
                   >
-                    {weeklyGoals.map((g) => (
+                    {WEEKLY_GOALS.map((g) => (
                       <button
+                        type="button"
                         key={g}
                         onClick={() => handleChange("weeklyGoal", g)}
                         style={chipStyle(formData.weeklyGoal === g)}
@@ -497,7 +561,14 @@ export default function ProfileSetup() {
           {/* STEP 3 — Mentor Preferences */}
           {step === 3 && role === "mentor" && (
             <div>
-              <h2 style={headStyle}>Your mentoring preferences 🎯</h2>
+              <h2 style={headStyle}>
+                Your mentoring preferences{" "}
+                <Target
+                  size={22}
+                  color="#2563eb"
+                  style={{ display: "inline-block", verticalAlign: "middle" }}
+                />
+              </h2>
               <p style={subStyle}>
                 Help students know what to expect from you.
               </p>
@@ -513,8 +584,9 @@ export default function ProfileSetup() {
                   <div
                     style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
                   >
-                    {teachingStyles.map((s) => (
+                    {TEACHING_STYLES.map((s) => (
                       <button
+                        type="button"
                         key={s}
                         onClick={() => handleChange("teachingStyle", s)}
                         style={chipStyle(formData.teachingStyle === s)}
@@ -529,8 +601,9 @@ export default function ProfileSetup() {
                   <div
                     style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
                   >
-                    {availabilityOptions.map((a) => (
+                    {AVAILABILITY_OPTIONS.map((a) => (
                       <button
+                        type="button"
                         key={a}
                         onClick={() => handleChange("availability", a)}
                         style={chipStyle(formData.availability === a)}
@@ -547,9 +620,17 @@ export default function ProfileSetup() {
           {/* STEP 4 — Done */}
           {step === 4 && (
             <div style={{ textAlign: "center", padding: "20px 0" }}>
-              <div style={{ fontSize: "4rem", marginBottom: "16px" }}>🎉</div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginBottom: "16px",
+                }}
+              >
+                <CheckCircle size={64} color="#16a34a" />
+              </div>
               <h2 style={{ ...headStyle, textAlign: "center" }}>
-                You're all set, {formData.fullName.split(" ")[0]}!
+                You're all set, {firstName}!
               </h2>
               <p
                 style={{
@@ -571,54 +652,33 @@ export default function ProfileSetup() {
                   marginBottom: "28px",
                 }}
               >
-                <p
-                  style={{
-                    fontSize: "13px",
-                    color: "#64748b",
-                    marginBottom: "8px",
-                  }}
-                >
-                  📍 {formData.location || "Location not set"}
+                <p style={summaryTextItem}>
+                  <MapPin size={16} style={summaryIconStyle} />{" "}
+                  {formData.location || "Location not set"}
                 </p>
                 {role === "student" && (
-                  <p
-                    style={{
-                      fontSize: "13px",
-                      color: "#64748b",
-                      marginBottom: "8px",
-                    }}
-                  >
-                    🎓 {formData.school || "School not set"}
-                  </p>
-                )}
-                {role === "student" && (
-                  <p
-                    style={{
-                      fontSize: "13px",
-                      color: "#64748b",
-                      marginBottom: "8px",
-                    }}
-                  >
-                    📚{" "}
-                    {formData.interests.join(", ") || "No interests selected"}
-                  </p>
+                  <>
+                    <p style={summaryTextItem}>
+                      <GraduationCap size={16} style={summaryIconStyle} />{" "}
+                      {formData.school || "School not set"}
+                    </p>
+                    <p style={summaryTextItem}>
+                      <BookOpen size={16} style={summaryIconStyle} />{" "}
+                      {formData.interests.join(", ") || "No interests selected"}
+                    </p>
+                  </>
                 )}
                 {role === "mentor" && (
-                  <p
-                    style={{
-                      fontSize: "13px",
-                      color: "#64748b",
-                      marginBottom: "8px",
-                    }}
-                  >
-                    💼{" "}
-                    {formData.expertise.join(", ") || "No expertise selected"}
-                  </p>
-                )}
-                {role === "mentor" && (
-                  <p style={{ fontSize: "13px", color: "#64748b" }}>
-                    ⏰ {formData.availability || "Availability not set"}
-                  </p>
+                  <>
+                    <p style={summaryTextItem}>
+                      <Briefcase size={16} style={summaryIconStyle} />{" "}
+                      {formData.expertise.join(", ") || "No expertise selected"}
+                    </p>
+                    <p style={summaryTextItem}>
+                      <Clock size={16} style={summaryIconStyle} />{" "}
+                      {formData.availability || "Availability not set"}
+                    </p>
+                  </>
                 )}
               </div>
             </div>
@@ -634,20 +694,32 @@ export default function ProfileSetup() {
             }}
           >
             {step > 1 ? (
-              <button onClick={handleBack} style={backBtnStyle}>
-                ← Back
+              <button type="button" onClick={handleBack} style={backBtnStyle}>
+                <ArrowLeft
+                  size={16}
+                  style={{ marginRight: "6px", verticalAlign: "middle" }}
+                />{" "}
+                Back
               </button>
             ) : (
               <div />
             )}
 
             {step < totalSteps ? (
-              <button onClick={handleNext} style={nextBtnStyle}>
-                Continue →
+              <button type="button" onClick={handleNext} style={nextBtnStyle}>
+                Continue{" "}
+                <ArrowRight
+                  size={16}
+                  style={{ marginLeft: "6px", verticalAlign: "middle" }}
+                />
               </button>
             ) : (
-              <button onClick={handleFinish} style={nextBtnStyle}>
-                Go to Dashboard 🚀
+              <button type="button" onClick={handleFinish} style={nextBtnStyle}>
+                Go to Dashboard{" "}
+                <Rocket
+                  size={16}
+                  style={{ marginLeft: "6px", verticalAlign: "middle" }}
+                />
               </button>
             )}
           </div>
@@ -657,7 +729,7 @@ export default function ProfileSetup() {
   );
 }
 
-// Shared styles
+// Shared CSS Objects
 const labelStyle = {
   display: "block",
   fontSize: "13px",
@@ -677,6 +749,7 @@ const inputStyle = {
   outline: "none",
   background: "#f9fafb",
   transition: "border-color 0.2s",
+  boxSizing: "border-box",
 };
 
 const chipStyle = (active) => ({
@@ -701,6 +774,8 @@ const nextBtnStyle = {
   border: "none",
   cursor: "pointer",
   transition: "background 0.2s",
+  display: "inline-flex",
+  alignItems: "center",
 };
 
 const backBtnStyle = {
@@ -712,6 +787,8 @@ const backBtnStyle = {
   fontWeight: "600",
   border: "1.5px solid #e5e7eb",
   cursor: "pointer",
+  display: "inline-flex",
+  alignItems: "center",
 };
 
 const headStyle = {
@@ -720,10 +797,27 @@ const headStyle = {
   fontWeight: "800",
   color: "#111827",
   marginBottom: "6px",
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
 };
 
 const subStyle = {
   color: "#6b7280",
   fontSize: "14px",
   marginBottom: "24px",
+};
+
+const summaryTextItem = {
+  fontSize: "13px",
+  color: "#64748b",
+  marginBottom: "8px",
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+};
+
+const summaryIconStyle = {
+  color: "#2563eb",
+  flexShrink: 0,
 };
