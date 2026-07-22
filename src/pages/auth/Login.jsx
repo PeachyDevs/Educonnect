@@ -20,6 +20,15 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMsg("");
+
+    // Optional: Ensure user selected a role before submitting
+    if (!formData.role) {
+      setErrorMsg(
+        "Please select whether you are logging in as a Student or Facilitator.",
+      );
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -31,6 +40,8 @@ export default function Login() {
           body: JSON.stringify({
             email: formData.email,
             password: formData.password,
+            // Include role if your endpoint accepts/requires it:
+            // role: formData.role,
           }),
         },
       );
@@ -42,8 +53,14 @@ export default function Login() {
         return;
       }
 
+      // Save token and user object merged with the selected role
+      const userToSave = {
+        ...(data.user || {}),
+        role: formData.role || data.user?.role || "student",
+      };
+
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("user", JSON.stringify(userToSave));
 
       const setupDone = localStorage.getItem("educonnect_profile_setup");
       if (setupDone) {
@@ -77,7 +94,9 @@ export default function Login() {
           <div className="grid grid-cols-2 gap-4">
             <button
               type="button"
-              onClick={() => setFormData({ ...formData, role: "student" })}
+              onClick={() =>
+                setFormData((prev) => ({ ...prev, role: "student" }))
+              }
               className={`p-4 rounded-xl border-2 transition-all font-semibold ${
                 formData.role === "student"
                   ? "border-blue-600 bg-blue-50 text-blue-600"
@@ -88,7 +107,9 @@ export default function Login() {
             </button>
             <button
               type="button"
-              onClick={() => setFormData({ ...formData, role: "mentor" })}
+              onClick={() =>
+                setFormData((prev) => ({ ...prev, role: "mentor" }))
+              }
               className={`p-4 rounded-xl border-2 transition-all font-semibold ${
                 formData.role === "mentor"
                   ? "border-green-600 bg-green-50 text-green-600"
