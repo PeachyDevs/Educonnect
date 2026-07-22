@@ -52,7 +52,7 @@ export default function Landing() {
               className="text-blue-700"
               strings={["Mentors", "Students", "Dreams"]}
               typeSpeed={40}
-              backSpeed={50}
+              backSpeed={45}
               backDelay={2000}
               loop
             />
