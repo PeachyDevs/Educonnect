@@ -10,9 +10,6 @@ export default function RootLayout() {
       <main className="w-full min-h-screen pt-20">
         <Outlet /> {/* Child routes render here */}
       </main>
-      <footer className="w-full h-max p-4 bg-black text-blue-600">
-        © 2026 EduConnect
-      </footer>
     </div>
   );
 }

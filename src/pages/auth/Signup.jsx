@@ -1,20 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Signup() {
+export default function SignUp() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    role: "",
-    firstName: "",
-    lastName: "",
+    role: "student",
+    fullName: "",
     email: "",
     password: "",
-    phone: "",
-    address: "",
+    confirmPassword: "",
   });
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [signupSuccess, setSignupSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (event) => {
@@ -25,31 +22,50 @@ export default function Signup() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMsg("");
+
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMsg("Passwords do not match.");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setErrorMsg("Password must be at least 6 characters long.");
+      return;
+    }
+
     setLoading(true);
+
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/auth/register`,
+        `${import.meta.env.VITE_API_URL}/auth/signup`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            role: formData.role === "facilitator" ? "mentor" : "student",
+            fullName: formData.fullName,
             email: formData.email,
             password: formData.password,
-            phone: formData.phone,
-            address: formData.address,
+            role: formData.role,
           }),
         },
       );
+
       const data = await response.json();
+
       if (!response.ok) {
-        setErrorMsg(data.message || "Something went wrong. Please try again.");
+        setErrorMsg(data.message || "Registration failed. Please try again.");
         return;
       }
-      setSignupSuccess(true);
-      setTimeout(() => navigate("/auth/login"), 2000);
+
+      // Save token and user info
+      localStorage.setItem("token", data.token);
+      localStorage.setItem(
+        "user",
+        JSON.stringify(data.user || { role: formData.role }),
+      );
+
+      // Direct new users to profile setup
+      navigate("/profile-setup");
     } catch {
       setErrorMsg("Network error. Please check your connection and try again.");
     } finally {
@@ -59,168 +75,114 @@ export default function Signup() {
 
   const handleClear = () => {
     setFormData({
-      role: "",
-      firstName: "",
-      lastName: "",
+      role: "student",
+      fullName: "",
       email: "",
       password: "",
-      phone: "",
-      address: "",
+      confirmPassword: "",
     });
   };
 
-  const inputStyle = {
-    width: "100%",
-    padding: "12px 14px",
-    borderRadius: "10px",
-    border: "1.5px solid #e5e7eb",
-    background: "#f9fafb",
-    color: "#111827",
-    fontSize: "14px",
-    outline: "none",
-    fontFamily: "inherit",
-    boxSizing: "border-box",
-    transition: "border-color 0.2s",
-  };
-
-  const labelStyle = {
-    display: "block",
-    fontSize: "13px",
-    fontWeight: "700",
-    color: "#374151",
-    marginBottom: "8px",
-  };
-
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background:
-          "linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #ede9fe 100%)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px",
-        fontFamily: "'Plus Jakarta Sans', sans-serif",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "680px",
-          background: "white",
-          borderRadius: "24px",
-          boxShadow: "0 24px 64px rgba(0,0,0,0.1)",
-          overflow: "hidden",
-        }}
-      >
-        {/* Top accent bar */}
-        <div
-          style={{
-            height: "4px",
-            background: "linear-gradient(90deg, #2563eb, #7c3aed)",
-          }}
-        />
+    /* 1. Main outer container (Flex column with gap so elements space out nicely) */
+    <div className="relative min-h-[calc(100vh-64px)] w-full bg-slate-900 flex flex-col justify-between items-center p-4 sm:p-6 md:p-10 overflow-x-hidden">
+      {/* Background Animated Accents & Grid */}
+      <div className="absolute top-10 left-1/4 w-[500px] h-[500px] bg-slate-700/30 rounded-full blur-[120px] animate-pulse pointer-events-none" />
+      <div className="absolute bottom-10 right-1/4 w-[450px] h-[450px] bg-blue-900/20 rounded-full blur-[120px] animate-pulse [animation-delay:2s] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#334155_1px,transparent_1px),linear-gradient(to_bottom,#334155_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-25 pointer-events-none" />
 
-        <div style={{ padding: "40px 36px" }}>
-          {/* Header */}
-          <div style={{ marginBottom: "32px" }}>
-            <div
-              style={{
-                width: "48px",
-                height: "48px",
-                background: "linear-gradient(135deg, #2563eb, #7c3aed)",
-                borderRadius: "14px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: "20px",
-              }}
-            >
+      {/* 2. Responsive Card Wrapper (CLOSE THIS DIV BEFORE THE FOOTER) */}
+      <div className="relative z-10 w-full max-w-md lg:max-w-4xl bg-white rounded-3xl shadow-2xl shadow-slate-950/50 overflow-hidden border border-slate-800/20 my-auto grid grid-cols-1 lg:grid-cols-2">
+        {/* Left Side Feature Panel */}
+        <div className="hidden lg:flex flex-col justify-between p-10 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white border-r border-slate-800/80">
+          <div>
+            <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mb-8">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
+                className="w-6 h-6"
                 fill="none"
-                stroke="white"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
                 strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
               >
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <line x1="19" y1="8" x2="19" y2="14" />
-                <line x1="22" y1="11" x2="16" y2="11" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                />
               </svg>
             </div>
-            <h1
-              style={{
-                fontSize: "1.75rem",
-                fontWeight: "800",
-                color: "#111827",
-                marginBottom: "6px",
-                fontFamily: "'Sora', sans-serif",
-              }}
-            >
-              Create your account
-            </h1>
-            <p style={{ fontSize: "14px", color: "#6b7280" }}>
-              Select your role and complete your details to get started.
+
+            <h2 className="text-3xl font-black leading-tight tracking-tight mb-4">
+              Join Our Learning <br /> Community Today
+            </h2>
+
+            <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
+              Start building hands-on projects, mastering theory through guided
+              courses, and collaborating with expert mentors and peers.
             </p>
           </div>
 
-          {/* Role selector */}
-          <div style={{ marginBottom: "28px" }}>
-            <p
-              style={{
-                fontSize: "13px",
-                fontWeight: "700",
-                color: "#374151",
-                marginBottom: "10px",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
-            >
-              I am a
+          <div className="pt-8 border-t border-slate-800/80">
+            <p className="text-xs text-slate-500">
+              © Educonnect Platform. Empowering education everywhere.
             </p>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "10px",
-              }}
-            >
-              {/* Student */}
+          </div>
+        </div>
+
+        {/* Right Form Section */}
+        <div className="p-8 sm:p-10 flex flex-col justify-center bg-white">
+          <div className="h-1.5 w-full bg-gradient-to-r from-blue-600 to-indigo-600 lg:hidden absolute top-0 left-0" />
+
+          {/* Header */}
+          <div className="mb-6 lg:mb-6 text-center lg:text-left">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 inline-flex lg:hidden items-center justify-center mb-4 shadow-md shadow-blue-500/20">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="8.5" cy="7" r="4" />
+                <line x1="20" y1="8" x2="20" y2="14" />
+                <line x1="23" y1="11" x2="17" y2="11" />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-extrabold text-slate-900 mb-1 tracking-tight">
+              Create an account
+            </h1>
+            <p className="text-sm text-slate-500 font-medium">
+              Get started on your project-based learning path
+            </p>
+          </div>
+
+          {/* Role Selector */}
+          <div className="mb-5">
+            <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+              Join as
+            </label>
+            <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
-                onClick={() => setFormData({ ...formData, role: "student" })}
-                style={{
-                  padding: "14px 16px",
-                  borderRadius: "12px",
-                  border:
-                    formData.role === "student"
-                      ? "2px solid #2563eb"
-                      : "2px solid #e5e7eb",
-                  background: formData.role === "student" ? "#eff6ff" : "white",
-                  color: formData.role === "student" ? "#2563eb" : "#374151",
-                  fontWeight: "600",
-                  fontSize: "14px",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "8px",
-                  transition: "all 0.2s",
-                  fontFamily: "inherit",
-                }}
+                onClick={() =>
+                  setFormData((prev) => ({ ...prev, role: "student" }))
+                }
+                className={`py-2.5 px-4 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer border ${
+                  formData.role === "student"
+                    ? "border-blue-600 bg-blue-50/70 text-blue-600 shadow-sm"
+                    : "border-slate-200 bg-slate-50/50 text-slate-600 hover:bg-slate-100/80"
+                }`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
+                  className="w-4 h-4"
                   fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
@@ -232,40 +194,22 @@ export default function Signup() {
                 Student
               </button>
 
-              {/* Facilitator */}
               <button
                 type="button"
                 onClick={() =>
-                  setFormData({ ...formData, role: "facilitator" })
+                  setFormData((prev) => ({ ...prev, role: "mentor" }))
                 }
-                style={{
-                  padding: "14px 16px",
-                  borderRadius: "12px",
-                  border:
-                    formData.role === "facilitator"
-                      ? "2px solid #16a34a"
-                      : "2px solid #e5e7eb",
-                  background:
-                    formData.role === "facilitator" ? "#f0fdf4" : "white",
-                  color:
-                    formData.role === "facilitator" ? "#16a34a" : "#374151",
-                  fontWeight: "600",
-                  fontSize: "14px",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "8px",
-                  transition: "all 0.2s",
-                  fontFamily: "inherit",
-                }}
+                className={`py-2.5 px-4 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer border ${
+                  formData.role === "mentor"
+                    ? "border-indigo-600 bg-indigo-50/70 text-indigo-600 shadow-sm"
+                    : "border-slate-200 bg-slate-50/50 text-slate-600 hover:bg-slate-100/80"
+                }`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
+                  className="w-4 h-4"
                   fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
@@ -273,181 +217,190 @@ export default function Signup() {
                 >
                   <circle cx="12" cy="8" r="4" />
                   <path d="M12 14c-5 0-8 2-8 3v1h16v-1c0-1-3-3-8-3z" />
-                  <line x1="17" y1="3" x2="17" y2="9" />
-                  <line x1="14" y1="6" x2="20" y2="6" />
                 </svg>
-                Facilitator
+                Mentor
               </button>
             </div>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit}>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "16px",
-                marginBottom: "16px",
-              }}
-            >
-              <div>
-                <label style={labelStyle}>First Name</label>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
+            {/* Full Name Field */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                Full Name
+              </label>
+              <div className="relative flex items-center">
+                <span className="absolute left-3.5 text-slate-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </span>
                 <input
-                  name="firstName"
-                  value={formData.firstName}
+                  name="fullName"
+                  type="text"
+                  value={formData.fullName}
                   onChange={handleChange}
-                  style={inputStyle}
-                  placeholder="John"
                   required
-                  onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
-                  onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
+                  placeholder="John Doe"
+                  className="w-full py-2.5 pl-10 pr-4 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 text-sm focus:outline-none focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-500/10 transition-all placeholder:text-slate-400"
                 />
               </div>
+            </div>
 
-              <div>
-                <label style={labelStyle}>Last Name</label>
-                <input
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  style={inputStyle}
-                  placeholder="Doe"
-                  required
-                  onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
-                  onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
-                />
-              </div>
-
-              <div>
-                <label style={labelStyle}>Email</label>
+            {/* Email Field */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                Email Address
+              </label>
+              <div className="relative flex items-center">
+                <span className="absolute left-3.5 text-slate-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </span>
                 <input
                   name="email"
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  style={inputStyle}
-                  placeholder="you@example.com"
                   required
-                  onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
-                  onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
-                />
-              </div>
-
-              <div>
-                <label style={labelStyle}>Password</label>
-                <div style={{ position: "relative" }}>
-                  <input
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    value={formData.password}
-                    onChange={handleChange}
-                    style={{ ...inputStyle, paddingRight: "42px" }}
-                    placeholder="••••••••"
-                    required
-                    onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
-                    onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((p) => !p)}
-                    style={{
-                      position: "absolute",
-                      right: "12px",
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      color: "#9ca3af",
-                      padding: 0,
-                    }}
-                  >
-                    {showPassword ? (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
-                        <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-                        <line x1="1" y1="1" x2="23" y2="23" />
-                      </svg>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                        <circle cx="12" cy="12" r="3" />
-                      </svg>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label style={labelStyle}>Phone</label>
-                <input
-                  name="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  style={inputStyle}
-                  placeholder="123-456-7890"
-                  onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
-                  onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
-                />
-              </div>
-
-              <div>
-                <label style={labelStyle}>Address</label>
-                <input
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  style={inputStyle}
-                  placeholder="123 Main St"
-                  onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
-                  onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
+                  placeholder="you@example.com"
+                  className="w-full py-2.5 pl-10 pr-4 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 text-sm focus:outline-none focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-500/10 transition-all placeholder:text-slate-400"
                 />
               </div>
             </div>
 
+            {/* Password Field */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                Password
+              </label>
+              <div className="relative flex items-center">
+                <span className="absolute left-3.5 text-slate-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </span>
+                <input
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  placeholder="•••••••"
+                  className="w-full py-2.5 pl-10 pr-10 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 text-sm focus:outline-none focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-500/10 transition-all placeholder:text-slate-400"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-3.5 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                >
+                  {showPassword ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Confirm Password Field */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                Confirm Password
+              </label>
+              <div className="relative flex items-center">
+                <span className="absolute left-3.5 text-slate-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </span>
+                <input
+                  name="confirmPassword"
+                  type={showPassword ? "text" : "password"}
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                  placeholder="•••••••"
+                  className="w-full py-2.5 pl-10 pr-4 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 text-sm focus:outline-none focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-500/10 transition-all placeholder:text-slate-400"
+                />
+              </div>
+            </div>
+
+            {/* Error Alert */}
             {errorMsg && (
-              <div
-                style={{
-                  padding: "12px 14px",
-                  background: "#fef2f2",
-                  border: "1px solid #fecaca",
-                  borderRadius: "10px",
-                  color: "#dc2626",
-                  fontSize: "13px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  marginBottom: "16px",
-                }}
-              >
+              <div className="p-3 bg-red-50/80 border border-red-200/80 rounded-xl text-red-600 text-xs font-medium flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
+                  className="w-4 h-4 shrink-0"
                   fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
@@ -461,98 +414,64 @@ export default function Signup() {
               </div>
             )}
 
-            {signupSuccess && (
-              <div
-                style={{
-                  padding: "12px 14px",
-                  background: "#f0fdf4",
-                  border: "1px solid #bbf7d0",
-                  borderRadius: "10px",
-                  color: "#16a34a",
-                  fontSize: "13px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  marginBottom: "16px",
-                }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                  <polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
-                Account created! Taking you to login...
-              </div>
-            )}
-
-            <div style={{ display: "flex", gap: "10px" }}>
+            {/* Action Buttons */}
+            <div className="flex gap-2.5 mt-2">
               <button
                 type="button"
                 onClick={handleClear}
-                style={{
-                  padding: "12px 20px",
-                  borderRadius: "10px",
-                  border: "1.5px solid #e5e7eb",
-                  background: "white",
-                  color: "#374151",
-                  fontWeight: "600",
-                  fontSize: "14px",
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                }}
+                className="px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-600 font-semibold text-sm hover:bg-slate-50 transition-all cursor-pointer active:scale-[0.98]"
               >
                 Clear
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                style={{
-                  flex: 1,
-                  padding: "12px 20px",
-                  borderRadius: "10px",
-                  border: "none",
-                  background: loading
-                    ? "#93c5fd"
-                    : "linear-gradient(135deg, #2563eb, #7c3aed)",
-                  color: "white",
-                  fontWeight: "700",
-                  fontSize: "14px",
-                  cursor: loading ? "not-allowed" : "pointer",
-                  fontFamily: "inherit",
-                }}
+                className={`flex-1 py-2.5 px-5 rounded-xl text-white font-bold text-sm shadow-md shadow-blue-500/15 transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98] ${
+                  loading
+                    ? "bg-blue-400 cursor-not-allowed"
+                    : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:opacity-95"
+                }`}
               >
-                {loading ? "Creating account..." : "Create Account →"}
+                {loading ? "Creating Account..." : "Create Account →"}
               </button>
             </div>
           </form>
 
-          <p
-            style={{
-              textAlign: "center",
-              marginTop: "24px",
-              fontSize: "13px",
-              color: "#6b7280",
-            }}
-          >
+          {/* "Already have an account?" section ends here */}
+          <p className="text-center lg:text-left mt-5 text-xs text-slate-500 font-medium">
             Already have an account?{" "}
             <Link
               to="/auth/login"
-              style={{ color: "#2563eb", fontWeight: "700" }}
+              className="text-blue-600 font-bold hover:text-blue-700 hover:underline transition-colors"
             >
               Sign in
             </Link>
           </p>
         </div>
       </div>
+
+      {/* 3. Footer sits OUTSIDE the card container with top margin (mt-6 or mt-8) */}
+      <footer className="relative z-10 w-full text-center mt-6 mb-2">
+        <div className="flex items-center justify-center gap-4 sm:gap-6 text-xs text-slate-400 font-medium">
+          <Link
+            to="/privacy"
+            className="hover:text-slate-200 transition-colors"
+          >
+            Privacy Policy
+          </Link>
+          <span>•</span>
+          <Link to="/terms" className="hover:text-slate-200 transition-colors">
+            Terms of Service
+          </Link>
+          <span>•</span>
+          <Link
+            to="/contact"
+            className="hover:text-slate-200 transition-colors"
+          >
+            Help & Support
+          </Link>
+        </div>
+      </footer>
     </div>
   );
 }

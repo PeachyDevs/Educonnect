@@ -23,7 +23,7 @@ export default function Login() {
 
     if (!formData.role) {
       setErrorMsg(
-        "Please select whether you are logging in as a Student or Facilitator.",
+        "Please select whether you are logging in as a Student or Mentor.",
       );
       return;
     }
@@ -72,60 +72,70 @@ export default function Login() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background:
-          "linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #ede9fe 100%)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px",
-        fontFamily: "'Plus Jakarta Sans', sans-serif",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "460px",
-          background: "white",
-          borderRadius: "24px",
-          boxShadow: "0 20px 50px rgba(37, 99, 235, 0.08)",
-          overflow: "hidden",
-        }}
-      >
-        {/* Top Accent Bar */}
-        <div
-          style={{
-            height: "5px",
-            background: "linear-gradient(90deg, #2563eb, #7c3aed)",
-          }}
-        />
+    <div className="relative min-h-[calc(100vh-64px)] w-full bg-slate-900 flex flex-col justify-between items-center p-4 sm:p-6 md:p-10 overflow-x-hidden">
+      {/* Background Animated Accents & Grid Lines */}
 
-        <div style={{ padding: "40px 36px" }}>
-          {/* Header */}
-          <div style={{ marginBottom: "28px", textAlign: "center" }}>
-            <div
-              style={{
-                width: "52px",
-                height: "52px",
-                background: "linear-gradient(135deg, #2563eb, #7c3aed)",
-                borderRadius: "16px",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: "16px",
-                boxShadow: "0 8px 16px rgba(37, 99, 235, 0.2)",
-              }}
-            >
+      {/* Background Animated Accents */}
+      <div className="absolute top-10 left-1/4 w-[500px] h-[500px] bg-slate-700/30 rounded-full blur-[120px] animate-pulse pointer-events-none" />
+      <div className="absolute bottom-10 right-1/4 w-[450px] h-[450px] bg-blue-900/20 rounded-full blur-[120px] animate-pulse [animation-delay:2s] pointer-events-none" />
+
+      {/* Moving Subtle Grid Lines */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#334155_1px,transparent_1px),linear-gradient(to_bottom,#334155_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-25 pointer-events-none" />
+
+      {/* 1. Responsive Card Wrapper (Make sure this ends BEFORE the footer) */}
+      <div className="relative z-10 w-full max-w-md lg:max-w-4xl bg-white rounded-3xl shadow-2xl shadow-slate-950/50 overflow-hidden border border-slate-800/20 my-auto grid grid-cols-1 lg:grid-cols-2">
+        {/* Left Side Feature Panel (hidden on mobile) */}
+        <div className="hidden lg:flex flex-col justify-between p-10 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white border-r border-slate-800/80">
+          <div>
+            <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mb-8">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
+                className="w-6 h-6"
                 fill="none"
-                stroke="white"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
                 strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                />
+              </svg>
+            </div>
+
+            <h2 className="text-3xl font-black leading-tight tracking-tight mb-4">
+              Master Courses & <br /> Build Real Projects
+            </h2>
+
+            <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
+              Learn the core concepts through guided courses, get feedback from
+              expert mentors, and apply your knowledge by collaborating on
+              real-world projects.
+            </p>
+          </div>
+
+          <div className="pt-8 border-t border-slate-800/80">
+            <p className="text-xs text-slate-500">
+              © Educonnect Platform. Empowering education everywhere.
+            </p>
+          </div>
+        </div>
+
+        {/* Right Form Section */}
+        <div className="p-8 sm:p-10 flex flex-col justify-center bg-white">
+          <div className="h-1.5 w-full bg-gradient-to-r from-blue-600 to-indigo-600 lg:hidden absolute top-0 left-0" />
+
+          {/* Header */}
+          <div className="mb-6 lg:mb-8 text-center lg:text-left">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 inline-flex lg:hidden items-center justify-center mb-4 shadow-md shadow-blue-500/20">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
@@ -134,73 +144,36 @@ export default function Login() {
                 <line x1="15" y1="12" x2="3" y2="12" />
               </svg>
             </div>
-            <h1
-              style={{
-                fontSize: "1.75rem",
-                fontWeight: "800",
-                color: "#111827",
-                marginBottom: "6px",
-                fontFamily: "'Sora', sans-serif",
-              }}
-            >
+            <h1 className="text-2xl font-extrabold text-slate-900 mb-1 tracking-tight">
               Welcome back
             </h1>
-            <p style={{ fontSize: "14px", color: "#6b7280" }}>
+            <p className="text-sm text-slate-500 font-medium">
               Sign in to continue your learning journey
             </p>
           </div>
 
           {/* Role Selector */}
-          <div style={{ marginBottom: "24px" }}>
-            <label
-              style={{
-                display: "block",
-                fontSize: "12px",
-                fontWeight: "700",
-                color: "#4b5563",
-                marginBottom: "8px",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
-            >
+          <div className="mb-6">
+            <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
               Login as
             </label>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "10px",
-              }}
-            >
+            <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
-                onClick={() => setFormData({ ...formData, role: "student" })}
-                style={{
-                  padding: "12px 16px",
-                  borderRadius: "12px",
-                  border:
-                    formData.role === "student"
-                      ? "2px solid #2563eb"
-                      : "1.5px solid #e5e7eb",
-                  background:
-                    formData.role === "student" ? "#eff6ff" : "#f9fafb",
-                  color: formData.role === "student" ? "#2563eb" : "#4b5563",
-                  fontWeight: "600",
-                  fontSize: "14px",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "8px",
-                  transition: "all 0.2s ease",
-                }}
+                onClick={() =>
+                  setFormData((prev) => ({ ...prev, role: "student" }))
+                }
+                className={`py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer border ${
+                  formData.role === "student"
+                    ? "border-blue-600 bg-blue-50/70 text-blue-600 shadow-sm"
+                    : "border-slate-200 bg-slate-50/50 text-slate-600 hover:bg-slate-100/80"
+                }`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
+                  className="w-4 h-4"
                   fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
@@ -214,33 +187,20 @@ export default function Login() {
 
               <button
                 type="button"
-                onClick={() => setFormData({ ...formData, role: "mentor" })}
-                style={{
-                  padding: "12px 16px",
-                  borderRadius: "12px",
-                  border:
-                    formData.role === "mentor"
-                      ? "2px solid #7c3aed"
-                      : "1.5px solid #e5e7eb",
-                  background:
-                    formData.role === "mentor" ? "#f5f3ff" : "#f9fafb",
-                  color: formData.role === "mentor" ? "#7c3aed" : "#4b5563",
-                  fontWeight: "600",
-                  fontSize: "14px",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "8px",
-                  transition: "all 0.2s ease",
-                }}
+                onClick={() =>
+                  setFormData((prev) => ({ ...prev, role: "mentor" }))
+                }
+                className={`py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer border ${
+                  formData.role === "mentor"
+                    ? "border-indigo-600 bg-indigo-50/70 text-indigo-600 shadow-sm"
+                    : "border-slate-200 bg-slate-50/50 text-slate-600 hover:bg-slate-100/80"
+                }`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
+                  className="w-4 h-4"
                   fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
@@ -249,46 +209,26 @@ export default function Login() {
                   <circle cx="12" cy="8" r="4" />
                   <path d="M12 14c-5 0-8 2-8 3v1h16v-1c0-1-3-3-8-3z" />
                 </svg>
-                Facilitator
+                Mentor
               </button>
             </div>
           </div>
 
           {/* Form */}
-          <form
-            onSubmit={handleSubmit}
-            style={{ display: "flex", flexDirection: "column", gap: "18px" }}
-          >
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Email Field */}
             <div>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: "13px",
-                  fontWeight: "700",
-                  color: "#374151",
-                  marginBottom: "6px",
-                }}
-              >
+              <label className="block text-xs font-bold text-slate-700 mb-1.5">
                 Email Address
               </label>
-              <div style={{ position: "relative" }}>
-                <span
-                  style={{
-                    position: "absolute",
-                    left: "14px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    display: "flex",
-                  }}
-                >
+              <div className="relative flex items-center">
+                <span className="absolute left-3.5 text-slate-400">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
+                    className="w-4 h-4"
                     fill="none"
-                    stroke="#9ca3af"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -304,69 +244,32 @@ export default function Login() {
                   onChange={handleChange}
                   required
                   placeholder="you@example.com"
-                  style={{
-                    width: "100%",
-                    padding: "12px 14px 12px 42px",
-                    borderRadius: "10px",
-                    border: "1.5px solid #e5e7eb",
-                    background: "#f9fafb",
-                    color: "#111827",
-                    fontSize: "14px",
-                    outline: "none",
-                    boxSizing: "border-box",
-                  }}
+                  className="w-full py-3 pl-10 pr-4 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 text-sm focus:outline-none focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-500/10 transition-all placeholder:text-slate-400"
                 />
               </div>
             </div>
 
             {/* Password Field */}
             <div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "6px",
-                }}
-              >
-                <label
-                  style={{
-                    fontSize: "13px",
-                    fontWeight: "700",
-                    color: "#374151",
-                  }}
-                >
+              <div className="flex justify-between items-center mb-1.5">
+                <label className="text-xs font-bold text-slate-700">
                   Password
                 </label>
                 <Link
                   to="/auth/forgot-password"
-                  style={{
-                    fontSize: "12px",
-                    color: "#2563eb",
-                    fontWeight: "600",
-                    textDecoration: "none",
-                  }}
+                  className="text-xs text-blue-600 font-semibold hover:text-blue-700 hover:underline transition-colors"
                 >
                   Forgot password?
                 </Link>
               </div>
-              <div style={{ position: "relative" }}>
-                <span
-                  style={{
-                    position: "absolute",
-                    left: "14px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    display: "flex",
-                  }}
-                >
+              <div className="relative flex items-center">
+                <span className="absolute left-3.5 text-slate-400">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
+                    className="w-4 h-4"
                     fill="none"
-                    stroke="#9ca3af"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -381,43 +284,20 @@ export default function Login() {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  placeholder="Enter your password"
-                  style={{
-                    width: "100%",
-                    padding: "12px 42px 12px 42px",
-                    borderRadius: "10px",
-                    border: "1.5px solid #e5e7eb",
-                    background: "#f9fafb",
-                    color: "#111827",
-                    fontSize: "14px",
-                    outline: "none",
-                    boxSizing: "border-box",
-                  }}
+                  placeholder="••••••••"
+                  className="w-full py-3 pl-10 pr-10 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 text-sm focus:outline-none focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-500/10 transition-all placeholder:text-slate-400"
                 />
-                {/* SVG Toggle Button */}
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  style={{
-                    position: "absolute",
-                    right: "14px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    color: "#9ca3af",
-                    padding: 0,
-                    display: "flex",
-                  }}
+                  className="absolute right-3.5 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
                 >
                   {showPassword ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
+                      className="w-4 h-4"
                       fill="none"
+                      viewBox="0 0 24 24"
                       stroke="currentColor"
                       strokeWidth="2"
                       strokeLinecap="round"
@@ -430,10 +310,9 @@ export default function Login() {
                   ) : (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
+                      className="w-4 h-4"
                       fill="none"
+                      viewBox="0 0 24 24"
                       stroke="currentColor"
                       strokeWidth="2"
                       strokeLinecap="round"
@@ -447,26 +326,14 @@ export default function Login() {
               </div>
             </div>
 
+            {/* Error Alert */}
             {errorMsg && (
-              <div
-                style={{
-                  padding: "10px 14px",
-                  background: "#fef2f2",
-                  border: "1px solid #fecaca",
-                  borderRadius: "10px",
-                  color: "#dc2626",
-                  fontSize: "13px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                }}
-              >
+              <div className="p-3 bg-red-50/80 border border-red-200/80 rounded-xl text-red-600 text-xs font-medium flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
+                  className="w-4 h-4 shrink-0"
                   fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
@@ -480,68 +347,66 @@ export default function Login() {
               </div>
             )}
 
-            <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+            {/* Action Buttons */}
+            <div className="flex gap-2.5 mt-2">
               <button
                 type="button"
                 onClick={handleClear}
-                style={{
-                  padding: "12px 18px",
-                  borderRadius: "10px",
-                  border: "1.5px solid #e5e7eb",
-                  background: "white",
-                  color: "#6b7280",
-                  fontWeight: "600",
-                  fontSize: "14px",
-                  cursor: "pointer",
-                }}
+                className="px-5 py-3 rounded-xl border border-slate-200 bg-white text-slate-600 font-semibold text-sm hover:bg-slate-50 transition-all cursor-pointer active:scale-[0.98]"
               >
                 Clear
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                style={{
-                  flex: 1,
-                  padding: "12px 20px",
-                  borderRadius: "10px",
-                  border: "none",
-                  background: loading
-                    ? "#93c5fd"
-                    : "linear-gradient(135deg, #2563eb, #7c3aed)",
-                  color: "white",
-                  fontWeight: "700",
-                  fontSize: "14px",
-                  cursor: loading ? "not-allowed" : "pointer",
-                  boxShadow: "0 4px 12px rgba(37, 99, 235, 0.25)",
-                }}
+                className={`flex-1 py-3 px-5 rounded-xl text-white font-bold text-sm shadow-md shadow-blue-500/15 transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98] ${
+                  loading
+                    ? "bg-blue-400 cursor-not-allowed"
+                    : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:opacity-95"
+                }`}
               >
                 {loading ? "Signing in..." : "Sign In →"}
               </button>
             </div>
           </form>
 
-          <p
-            style={{
-              textAlign: "center",
-              marginTop: "24px",
-              fontSize: "13px",
-              color: "#6b7280",
-            }}
-          >
+          {/* Signup Footer Link */}
+          <p className="text-center lg:text-left mt-6 text-xs text-slate-500 font-medium">
             Don't have an account?{" "}
             <Link
               to="/auth/signup"
-              style={{
-                color: "#2563eb",
-                fontWeight: "700",
-                textDecoration: "none",
-              }}
+              className="text-blue-600 font-bold hover:text-blue-700 hover:underline transition-colors"
             >
               Sign up free
             </Link>
           </p>
         </div>
       </div>
+
+      {/* <--- CLOSE THE WHITE CARD WRAPPER HERE! */}
+
+      {/* 2. Footer sits OUTSIDE the white card on the dark page background */}
+      <footer className="relative z-10 w-full text-center mt-6 mb-2">
+        <div className="flex items-center justify-center gap-4 sm:gap-6 text-xs text-slate-400 font-medium">
+          <Link
+            to="/privacy"
+            className="hover:text-slate-200 transition-colors"
+          >
+            Privacy Policy
+          </Link>
+          <span>•</span>
+          <Link to="/terms" className="hover:text-slate-200 transition-colors">
+            Terms of Service
+          </Link>
+          <span>•</span>
+          <Link
+            to="/contact"
+            className="hover:text-slate-200 transition-colors"
+          >
+            Help & Support
+          </Link>
+        </div>
+      </footer>
     </div>
   );
 }
