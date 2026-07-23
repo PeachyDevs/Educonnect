@@ -65,13 +65,13 @@ export default function Landing() {
           <div className="flex gap-4 w-full justify-center md:justify-start">
             <button
               onClick={() => navigate("/auth/signup")}
-              className="bg-blue-700 text-white px-8 py-3 rounded-xl font-bold text-lg hover:bg-green-700 transition-all shadow-lg active:scale-95"
+              className="bg-blue-700 text-white px-8 py-3 rounded-xl font-bold text-lg hover:bg-blue-500 transition-all shadow-lg active:scale-95"
             >
               Get Started
             </button>
             <button
               onClick={() => scrollToSection("about")}
-              className="border border-slate-200 px-8 py-3 rounded-xl font-bold text-lg hover:bg-slate-50 transition-all active:scale-95"
+              className="border border-slate-200 px-8 py-3 rounded-xl font-bold text-lg hover:border-blue-500 active:border-blue-500 focus:outline-none transition-all active:scale-95"
             >
               Explore
             </button>
