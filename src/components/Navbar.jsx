@@ -41,19 +41,19 @@ export default function Navbar() {
       <div className="hidden md:flex items-center gap-8">
         <button
           onClick={() => handleNavigation("features")}
-          className="text-gray-700 hover:text-blue-600 font-medium transition cursor-pointer bg-none border-none"
+          className="text-gray-700 hover:text-green-600 font-medium transition cursor-pointer bg-none border-none"
         >
           Features
         </button>
         <button
           onClick={() => handleNavigation("about")}
-          className="text-gray-700 hover:text-blue-600 font-medium transition cursor-pointer bg-none border-none"
+          className="text-gray-700 hover:text-green-600 font-medium transition cursor-pointer bg-none border-none"
         >
           About
         </button>
         <button
           onClick={() => handleNavigation("contact")}
-          className="text-gray-700 hover:text-blue-600 font-medium transition cursor-pointer bg-none border-none"
+          className="text-gray-700 hover:text-green-600 font-medium transition cursor-pointer bg-none border-none"
         >
           Contact
         </button>

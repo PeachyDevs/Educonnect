@@ -49,7 +49,7 @@ export default function Landing() {
           <h1 className="flex flex-col font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight">
             Connect with your{" "}
             <ReactTyped
-              className="text-blue-700"
+              className="text-green-700"
               strings={["Mentors", "Students", "Dreams"]}
               typeSpeed={40}
               backSpeed={45}
@@ -65,7 +65,7 @@ export default function Landing() {
           <div className="flex gap-4 w-full justify-center md:justify-start">
             <button
               onClick={() => navigate("/auth/signup")}
-              className="bg-blue-700 text-white px-8 py-3 rounded-xl font-bold text-lg hover:bg-green-700 transition-all shadow-lg active:scale-95"
+              className="bg-green-700 text-white px-8 py-3 rounded-xl font-bold text-lg hover:bg-green-700 transition-all shadow-lg active:scale-95"
             >
               Get Started
             </button>
@@ -131,7 +131,7 @@ export default function Landing() {
       {/* About Section */}
       <section id="about" className="py-24 px-6 sm:px-12 bg-white">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
-          <div className="w-full md:w-1/2 bg-blue-50 rounded-3xl h-80 flex items-center justify-center">
+          <div className="w-full md:w-1/2 bg-green-50 rounded-3xl h-80 flex items-center justify-center">
             <div className="text-6xl opacity-20">🌍</div>
           </div>
           <div className="w-full md:w-1/2">
@@ -150,7 +150,7 @@ export default function Landing() {
             </p>
             <button
               onClick={() => scrollToSection("contact")}
-              className="text-blue-600 font-bold hover:underline"
+              className="text-green-600 font-bold hover:underline"
             >
               Read our full story →
             </button>
