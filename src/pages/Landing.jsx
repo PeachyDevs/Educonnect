@@ -99,53 +99,54 @@ export default function LandingPage() {
             </Link>
           </div>
         </section>
-
-        {/* Ecosystem Overview Card */}
-        <div className="w-full max-w-4xl mx-auto p-8 rounded-3xl bg-slate-900/60 border border-slate-800 backdrop-blur-md shadow-2xl">
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 text-center sm:text-left">
+        {/* Expanded Ecosystem Overview Card */}
+        <div className="w-full max-w-6xl mx-auto p-8 sm:p-12 rounded-3xl bg-slate-900/60 border border-slate-800 backdrop-blur-md shadow-2xl my-12">
+          <p className="text-xs sm:text-sm font-bold text-slate-400 uppercase tracking-widest mb-8 text-center sm:text-left">
             How The EduConnect Ecosystem Works
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 text-center">
-              <div className="w-10 h-10 mx-auto mb-3 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+            {/* Mentors Card */}
+            <div className="p-6 sm:p-8 rounded-2xl bg-slate-950/80 border border-slate-800 text-center flex flex-col items-center justify-center">
+              <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold text-lg">
                 01
               </div>
-              <h3 className="font-bold text-white text-base">
+              <h3 className="font-bold text-white text-lg sm:text-xl mb-2">
                 Experienced Mentors
               </h3>
-              <p className="text-slate-400 text-xs mt-1">
+              <p className="text-slate-400 text-sm leading-relaxed">
                 Guide students through real challenges and share industry
                 knowledge.
               </p>
             </div>
 
             {/* Central Card with EduConnect Logo */}
-            <div className="p-5 rounded-2xl bg-gradient-to-b from-blue-900/30 to-indigo-900/30 border border-blue-500/30 text-center flex flex-col items-center">
-              <div className="w-12 h-12 mb-3 rounded-xl bg-blue-600 flex items-center justify-center p-2 shadow-lg shadow-blue-500/30 overflow-hidden">
+            <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-b from-blue-900/40 to-indigo-900/40 border border-blue-500/40 text-center flex flex-col items-center justify-center shadow-lg shadow-blue-500/10">
+              <div className="w-14 h-14 mb-4 rounded-2xl bg-blue-600 flex items-center justify-center p-2.5 shadow-xl shadow-blue-500/30 overflow-hidden">
                 <img
                   src="/images/E.png"
                   alt="EduConnect Logo"
                   className="w-full h-full object-contain"
                 />
               </div>
-              <h3 className="font-extrabold text-white text-base">
+              <h3 className="font-extrabold text-white text-lg sm:text-xl mb-2">
                 EduConnect Platform
               </h3>
-              <p className="text-slate-300 text-xs mt-1">
+              <p className="text-slate-300 text-sm leading-relaxed">
                 Connects peers, coordinates projects, and tracks practical
                 growth.
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 text-center">
-              <div className="w-10 h-10 mx-auto mb-3 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold">
+            {/* Students Card */}
+            <div className="p-6 sm:p-8 rounded-2xl bg-slate-950/80 border border-slate-800 text-center flex flex-col items-center justify-center">
+              <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold text-lg">
                 02
               </div>
-              <h3 className="font-bold text-white text-base">
+              <h3 className="font-bold text-white text-lg sm:text-xl mb-2">
                 Student Collaborators
               </h3>
-              <p className="text-slate-400 text-xs mt-1">
+              <p className="text-slate-400 text-sm leading-relaxed">
                 Learn together, exchange skills, and build career-ready
                 portfolios.
               </p>
