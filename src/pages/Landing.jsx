@@ -56,24 +56,27 @@ export default function LandingPage() {
   ]);
 
   return (
-    <><div className="relative min-h-screen w-full bg-slate-950 text-slate-100 flex flex-col justify-between overflow-x-hidden pt-20">
+    <div className="relative min-h-screen w-full bg-slate-950 text-slate-100 flex flex-col justify-between overflow-x-hidden pt-20">
       {/* Background Radial Glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-blue-600/10 rounded-full blur-[150px] pointer-events-none" />
       {/* Grid Background Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_30%,#000_70%,transparent_100%)] opacity-30 pointer-events-none" />
+
       <main className="relative z-10 w-full px-6 sm:px-12 lg:px-16 py-12">
         {/* HERO SECTION */}
         <section className="w-full max-w-6xl mx-auto text-center pt-8 pb-20">
           <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-white mb-8 leading-[1.1]">
             Bridge Theory & Practice <br />
-            <span className="block mt-4 min-h-[1.2em]">
+            {/* Locked Container to Prevent Layout Jumps */}
+            <span className="inline-flex items-center justify-center mt-4 h-[2.5em] sm:h-[2.2em] overflow-hidden align-top">
               <span className="bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
                 {typedText}
               </span>
-              <span className="inline-block w-2 h-10 sm:h-16 ml-2 bg-blue-500 animate-pulse align-middle" />
+              <span className="inline-block w-1.5 sm:w-2 h-8 sm:h-14 ml-2 bg-blue-500 animate-pulse align-middle shrink-0" />
             </span>
           </h1>
 
+          {/* Rest of Hero Content - Completely Static */}
           <p className="max-w-3xl mx-auto text-lg sm:text-2xl text-slate-300 font-normal leading-relaxed mb-12">
             Turn screen time into career growth. EduConnect brings students and
             experienced mentors into a collaborative ecosystem to build
@@ -95,55 +98,60 @@ export default function LandingPage() {
               Sign In to Dashboard
             </Link>
           </div>
+        </section>
 
-          {/* Clean Ecosystem Overview Card */}
-          <div className="w-full max-w-4xl mx-auto p-8 rounded-3xl bg-slate-900/60 border border-slate-800 backdrop-blur-md shadow-2xl">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
-              How The EduConnect Ecosystem Works
-            </p>
+        {/* Ecosystem Overview Card */}
+        <div className="w-full max-w-4xl mx-auto p-8 rounded-3xl bg-slate-900/60 border border-slate-800 backdrop-blur-md shadow-2xl">
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 text-center sm:text-left">
+            How The EduConnect Ecosystem Works
+          </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-              <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 text-center">
-                <div className="w-10 h-10 mx-auto mb-3 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold">
-                  01
-                </div>
-                <h3 className="font-bold text-white text-base">
-                  Experienced Mentors
-                </h3>
-                <p className="text-slate-400 text-xs mt-1">
-                  Guide students through real challenges and share industry
-                  knowledge.
-                </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 text-center">
+              <div className="w-10 h-10 mx-auto mb-3 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold">
+                01
               </div>
+              <h3 className="font-bold text-white text-base">
+                Experienced Mentors
+              </h3>
+              <p className="text-slate-400 text-xs mt-1">
+                Guide students through real challenges and share industry
+                knowledge.
+              </p>
+            </div>
 
-              <div className="p-5 rounded-2xl bg-gradient-to-b from-blue-900/30 to-indigo-900/30 border border-blue-500/30 text-center">
-                <div className="w-10 h-10 mx-auto mb-3 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-lg shadow-blue-500/30">
-                  ⚡
-                </div>
-                <h3 className="font-extrabold text-white text-base">
-                  EduConnect Platform
-                </h3>
-                <p className="text-slate-300 text-xs mt-1">
-                  Connects peers, coordinates projects, and tracks practical
-                  growth.
-                </p>
+            {/* Central Card with EduConnect Logo */}
+            <div className="p-5 rounded-2xl bg-gradient-to-b from-blue-900/30 to-indigo-900/30 border border-blue-500/30 text-center flex flex-col items-center">
+              <div className="w-12 h-12 mb-3 rounded-xl bg-blue-600 flex items-center justify-center p-2 shadow-lg shadow-blue-500/30 overflow-hidden">
+                <img
+                  src="/images/E.png"
+                  alt="EduConnect Logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
+              <h3 className="font-extrabold text-white text-base">
+                EduConnect Platform
+              </h3>
+              <p className="text-slate-300 text-xs mt-1">
+                Connects peers, coordinates projects, and tracks practical
+                growth.
+              </p>
+            </div>
 
-              <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 text-center">
-                <div className="w-10 h-10 mx-auto mb-3 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold">
-                  02
-                </div>
-                <h3 className="font-bold text-white text-base">
-                  Student Collaborators
-                </h3>
-                <p className="text-slate-400 text-xs mt-1">
-                  Learn together, exchange skills, and build career-ready
-                  portfolios.
-                </p>
+            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 text-center">
+              <div className="w-10 h-10 mx-auto mb-3 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold">
+                02
               </div>
+              <h3 className="font-bold text-white text-base">
+                Student Collaborators
+              </h3>
+              <p className="text-slate-400 text-xs mt-1">
+                Learn together, exchange skills, and build career-ready
+                portfolios.
+              </p>
             </div>
           </div>
-        </section>
+        </div>
 
         {/* FEATURES SECTION */}
         <section
@@ -260,204 +268,204 @@ export default function LandingPage() {
           </div>
         </section>
       </main>
+
       {/* FOOTER & CONTACT INTEGRATION */}
       <footer
         id="contact"
-        className="relative z-10 w-full border-t border-slate-800 bg-slate-950 pt-16 pb-12"
+        className="relative z-10 w-full bg-slate-950 pt-16 border-t border-slate-800/80"
       >
-        {/* Full width container with side padding */}
-        <div className="w-full px-6 sm:px-12 lg:px-16">
-          {/* Contact & Partnership Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-16 border-b border-slate-800/80">
-            <div className="lg:col-span-5">
-              <h3 className="text-2xl sm:text-3xl font-black text-white mb-3">
-                Have questions or want to partner?
-              </h3>
-              <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                Reach out to us to bring EduConnect to your university, sign up
-                as a mentor, or learn more about our student community.
-              </p>
+        <div className="w-full max-w-xl mx-auto px-6 text-center">
+          <span className="text-xs font-bold tracking-widest text-blue-400 uppercase mb-2 block">
+            SAY HELLO
+          </span>
 
-              {/* Contact Info & Studio Link */}
-              <div className="space-y-3 text-sm text-slate-300">
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-400 font-bold">Email:</span>
-                  <span>contact@educonnect.com</span>
-                </p>
+          <h2 className="text-3xl sm:text-5xl font-black text-white mb-3 tracking-tight">
+            Get in touch
+          </h2>
 
-                <div className="flex items-center gap-3">
-                  <span className="text-blue-400 font-bold">Built by:</span>
-                  <img
-                    src="/images/preview.png"
-                    alt="PeachyDev Studio"
-                    className="logo-icon w-8 h-8 rounded" />
-                  <div>
-                    <h4 className="text-sm font-semibold text-white">PeachyDev Studio</h4>
-                    <a
-                      href="https://peachydevs.com"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-indigo-400 text-xs"
-                    >
-                      PeachyDevs Studio ↗
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <p className="text-slate-400 text-sm sm:text-base leading-relaxed mb-8">
+            Have a project in mind? Want to collaborate, become a mentor, or
+            offer feedback? We’d love to hear from you.
+          </p>
+
+          {/* Contact Form */}
+          <form
+            onSubmit={(e) => e.preventDefault()}
+            className="space-y-3.5 mb-10"
+          >
+            <input
+              type="text"
+              placeholder="Your name"
+              className="w-full py-3 px-4 rounded-xl bg-slate-900/90 border border-slate-800 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all placeholder-slate-500"
+            />
+
+            <input
+              type="email"
+              placeholder="Your email"
+              className="w-full py-3 px-4 rounded-xl bg-slate-900/90 border border-slate-800 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all placeholder-slate-500"
+            />
+
+            <input
+              type="text"
+              placeholder="Subject"
+              className="w-full py-3 px-4 rounded-xl bg-slate-900/90 border border-slate-800 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all placeholder-slate-500"
+            />
+
+            <textarea
+              rows="4"
+              placeholder="Tell us about your idea, feedback, or suggestion..."
+              className="w-full py-3 px-4 rounded-xl bg-slate-900/90 border border-slate-800 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all placeholder-slate-500 resize-none"
+            />
+
+            <button
+              type="submit"
+              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:brightness-110 text-white font-bold text-base shadow-lg shadow-blue-600/25 transition-all active:scale-[0.98] cursor-pointer mt-2"
+            >
+              Send Message →
+            </button>
+          </form>
+
+          {/* Clean Social Links Bar */}
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs sm:text-sm text-slate-300 font-medium mb-12 border-t border-slate-900 pt-8">
+            <a
+              href="mailto:contact@educonnect.com"
+              className="inline-flex items-center gap-2 hover:text-white transition-colors"
+            >
+              <svg
+                className="w-4 h-4 text-blue-400 shrink-0"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+              </svg>
+              <span>Email Us</span>
+            </a>
+
+            <a
+              href="https://x.com"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 hover:text-white transition-colors"
+            >
+              <svg
+                className="w-4 h-4 text-slate-400 shrink-0"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+              <span>Twitter / X</span>
+            </a>
+
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 hover:text-white transition-colors"
+            >
+              <svg
+                className="w-4 h-4 text-slate-400 shrink-0"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                />
+              </svg>
+              <span>GitHub</span>
+            </a>
+
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 hover:text-white transition-colors"
+            >
+              <svg
+                className="w-4 h-4 text-blue-400 shrink-0"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.7a1.6 1.6 0 1 0 1.6 1.6 1.6 1.6 0 0 0-1.6-1.6z" />
+              </svg>
+              <span>LinkedIn</span>
+            </a>
+
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 hover:text-white transition-colors"
+            >
+              <svg
+                className="w-4 h-4 text-pink-400 shrink-0"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                viewBox="0 0 24 24"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+              <span>Instagram</span>
+            </a>
           </div>
         </div>
-      </div>
-      <form
-        onSubmit={(e) => e.preventDefault()}
-        className="lg:col-span-7 bg-slate-900/60 border border-slate-800 p-6 rounded-2xl space-y-4"
-      >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <input
-            type="text"
-            placeholder="Your Name"
-            className="py-3 px-4 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-blue-500" />
-          <input
-            type="email"
-            placeholder="Email Address"
-            className="py-3 px-4 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-blue-500" />
-        </div>
-        <textarea
-          rows="3"
-          placeholder="Your Message"
-          className="w-full py-3 px-4 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-blue-500" />
-        <button
-          type="submit"
-          className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition-all cursor-pointer"
-        >
-          Send Message
-        </button>
-      </form></>
-          </div>
 
-          {/* Bottom Copyright & Social SVG Icons */}
-          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="flex flex-col sm:flex-row items-center gap-4 text-xs text-slate-400">
-              <p>
-                © {new Date().getFullYear()} EduConnect Platform. All rights
-                reserved.
-              </p>
-              <div className="flex items-center gap-4">
-                <Link
-                  to="/privacy"
-                  className="hover:text-white transition-colors"
-                >
-                  Privacy Policy
-                </Link>
-                <Link
-                  to="/terms"
-                  className="hover:text-white transition-colors"
-                >
-                  Terms of Service
-                </Link>
+        {/* Sub-Footer Bar */}
+        <div className="w-full bg-slate-900 border-t border-slate-800/80 py-4 px-4 sm:px-12 lg:px-16">
+          <div className="w-full flex flex-row items-center justify-between gap-2 text-[11px] sm:text-xs text-slate-400">
+            {/* Brand Left */}
+            <div className="flex items-center gap-2 shrink-0">
+              <div className="w-6 h-6 rounded-lg bg-blue-600 flex items-center justify-center overflow-hidden p-1 shadow-md">
+                <img
+                  src="/images/E.png"
+                  alt="EduConnect Logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
+              <span className="text-white font-bold text-xs sm:text-base tracking-tight inline">
+                EduConnect
+              </span>
             </div>
 
-            {/* Social Media SVG Icons Bar */}
-            <div className="flex items-center gap-5 text-slate-400">
-              {/* Instagram */}
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Instagram"
-                className="hover:text-pink-500 transition-colors"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  viewBox="0 0 24 24"
-                >
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                </svg>
-              </a>
-
-              {/* Facebook */}
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Facebook"
-                className="hover:text-blue-500 transition-colors"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
-                </svg>
-              </a>
-
-              {/* LinkedIn */}
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="LinkedIn"
-                className="hover:text-blue-400 transition-colors"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.7a1.6 1.6 0 1 0 1.6 1.6 1.6 1.6 0 0 0-1.6-1.6z" />
-                </svg>
-              </a>
-
-              {/* GitHub */}
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="GitHub"
+            {/* Policies Center */}
+            <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+              <Link
+                to="/privacy"
                 className="hover:text-white transition-colors"
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                  />
-                </svg>
-              </a>
+                Privacy Policy
+              </Link>
+              <span>•</span>
+              <Link to="/terms" className="hover:text-white transition-colors">
+                Terms of Service
+              </Link>
+            </div>
 
-              {/* X / Twitter */}
+            {/* Studio Credit Right */}
+            <div className="shrink-0 text-right">
+              Built by{" "}
               <a
-                href="https://x.com"
+                href="https://peachydevs.com"
                 target="_blank"
                 rel="noreferrer"
-                aria-label="X"
-                className="hover:text-white transition-colors"
+                className="font-semibold text-blue-400 hover:underline inline-flex items-center gap-1"
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
+                PeachyDev <span className="hidden sm:inline">Studio</span>{" "}
+                <span className="text-[9px] bg-slate-800 px-1 py-0.5 rounded text-slate-300 border border-slate-700">
+                  NG
+                </span>
               </a>
             </div>
           </div>
         </div>
-      </footer>{" "}
+      </footer>
     </div>
   );
 }

@@ -27,19 +27,13 @@ export default function Navbar() {
           className="flex items-center gap-3 cursor-pointer group"
           onClick={() => navigate("/")}
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5 text-white"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-            </svg>
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center p-2 shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform overflow-hidden">
+            {/* EDUCONNECT NAVBAR LOGO IMAGE PLACEHOLDER */}
+            <img
+              src="/images/E.png"
+              alt="EduConnect Logo"
+              className="w-full h-full object-contain"
+            />
           </div>
           <span className="font-extrabold text-xl sm:text-2xl text-white tracking-tight">
             Educonnect
