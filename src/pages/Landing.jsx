@@ -453,7 +453,7 @@ export default function LandingPage() {
             <div className="shrink-0 text-right">
               Built by{" "}
               <a
-                href="https://peachydevs.com"
+                href="http://127.0.0.1:5500/index.html"
                 target="_blank"
                 rel="noreferrer"
                 className="font-semibold text-blue-400 hover:underline inline-flex items-center gap-1"
