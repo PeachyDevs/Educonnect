@@ -7,14 +7,12 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleNavigation = (sectionId) => {
-    // If already on landing page, scroll to section
     if (location.pathname === "/") {
       const element = document.getElementById(sectionId);
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
       }
     } else {
-      // Navigate to landing page with hash
       navigate(`/#${sectionId}`);
     }
     setIsMenuOpen(false);
@@ -22,14 +20,14 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80">
-      <nav className="flex justify-between items-center w-full max-w-7xl mx-auto px-6 sm:px-12 py-4">
-        {/* Logo and Brand */}
+      {/* w-full + screen-edge padding */}
+      <nav className="flex justify-between items-center w-full px-4 sm:px-8 lg:px-12 py-4">
+        {/* Left Edge: Logo and Brand */}
         <div
           className="flex items-center gap-3 cursor-pointer group"
           onClick={() => navigate("/")}
         >
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
-            {/* Zap SVG Icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-5 h-5 text-white"
@@ -48,7 +46,7 @@ export default function Navbar() {
           </span>
         </div>
 
-        {/* Desktop Navigation Links */}
+        {/* Center Links */}
         <div className="hidden md:flex items-center gap-8">
           <button
             onClick={() => handleNavigation("features")}
@@ -70,7 +68,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Auth Buttons */}
+        {/* Right Edge: Auth Buttons */}
         <div className="hidden md:flex items-center gap-3">
           <button
             onClick={() => navigate("/auth/login")}
@@ -86,16 +84,14 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Toggle */}
         <button
           className="md:hidden p-2 text-slate-400 hover:text-white focus:outline-none cursor-pointer"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
           {isMenuOpen ? (
-            /* Close SVG */
             <svg
-              xmlns="http://www.w3.org/2000/svg"
               className="w-6 h-6"
               fill="none"
               viewBox="0 0 24 24"
@@ -109,9 +105,7 @@ export default function Navbar() {
               />
             </svg>
           ) : (
-            /* Menu SVG */
             <svg
-              xmlns="http://www.w3.org/2000/svg"
               className="w-6 h-6"
               fill="none"
               viewBox="0 0 24 24"
@@ -133,19 +127,19 @@ export default function Navbar() {
         <div className="md:hidden bg-slate-900/95 backdrop-blur-lg border-b border-slate-800 px-6 py-5 flex flex-col gap-4">
           <button
             onClick={() => handleNavigation("features")}
-            className="text-slate-300 hover:text-white font-medium text-left text-base py-1 transition-colors bg-transparent border-none"
+            className="text-slate-300 hover:text-white text-left font-medium text-base py-1"
           >
             Features
           </button>
           <button
             onClick={() => handleNavigation("about")}
-            className="text-slate-300 hover:text-white font-medium text-left text-base py-1 transition-colors bg-transparent border-none"
+            className="text-slate-300 hover:text-white text-left font-medium text-base py-1"
           >
             About
           </button>
           <button
             onClick={() => handleNavigation("contact")}
-            className="text-slate-300 hover:text-white font-medium text-left text-base py-1 transition-colors bg-transparent border-none"
+            className="text-slate-300 hover:text-white text-left font-medium text-base py-1"
           >
             Contact
           </button>
@@ -155,7 +149,7 @@ export default function Navbar() {
                 navigate("/auth/login");
                 setIsMenuOpen(false);
               }}
-              className="w-full text-slate-200 border border-slate-700 hover:bg-slate-800 font-semibold py-2.5 rounded-xl transition-all text-sm cursor-pointer"
+              className="w-full text-slate-200 border border-slate-700 hover:bg-slate-800 font-semibold py-2.5 rounded-xl text-sm"
             >
               Login
             </button>
@@ -164,7 +158,7 @@ export default function Navbar() {
                 navigate("/auth/signup");
                 setIsMenuOpen(false);
               }}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-2.5 rounded-xl hover:opacity-90 transition-all text-sm shadow-md shadow-blue-500/20 cursor-pointer"
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-2.5 rounded-xl text-sm shadow-md"
             >
               Sign Up
             </button>
