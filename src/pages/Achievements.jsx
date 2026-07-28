@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbarapp.jsx";
 import Sidebar from "../../src/components/Sidebar.jsx";
+import "../dashboard.css";
 
 export default function Achievements({ currentTheme, onThemeChange }) {
   return (

@@ -1,7 +1,8 @@
 import Navbar from "../components/Navbarapp.jsx";
 import Sidebar from "../../src/components/Sidebar.jsx";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Search, X } from "lucide-react";
+import "../dashboard.css";
 
 const ALL_PATHS = [
   {
@@ -54,9 +55,23 @@ export default function Learning({ currentTheme, onThemeChange }) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef(null);
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [learningData, setLearningData] = useState(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLearningData({
+        paths: ALL_PATHS,
+      });
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const suggestions =
     query.trim().length > 0
-      ? ALL_PATHS.filter(
+      ? (learningData?.paths || ALL_PATHS).filter(
           (p) =>
             p.name.toLowerCase().includes(query.toLowerCase()) ||
             p.desc.toLowerCase().includes(query.toLowerCase()),
@@ -74,6 +89,219 @@ export default function Learning({ currentTheme, onThemeChange }) {
     inputRef.current?.focus();
   };
 
+  // ==========================================================================
+  // LOADING SKELETON RENDER (Stacked 2-Column Layout)
+  // ==========================================================================
+  if (isLoading) {
+    return (
+      <>
+        <Navbar currentTheme={currentTheme} onThemeChange={onThemeChange} />
+        <div className="container">
+          <Sidebar />
+
+          <main className="main-content">
+            {/* Header Skeleton */}
+            <div className="page-header">
+              <div>
+                <div
+                  className="skeleton-element skel-title"
+                  style={{ width: "200px", height: "36px", marginTop: 0 }}
+                ></div>
+                <div
+                  className="skeleton-element skel-desc"
+                  style={{ width: "300px", height: "14px" }}
+                ></div>
+              </div>
+            </div>
+
+            {/* Search Bar Skeleton */}
+            <div
+              className="skeleton-element"
+              style={{
+                width: "100%",
+                height: "56px",
+                borderRadius: "1rem",
+                marginTop: "1.5rem",
+              }}
+            ></div>
+
+            {/* Active Path Banner Skeleton */}
+            <div className="active-path-banner" style={{ marginTop: "2rem" }}>
+              <div
+                className="skeleton-element skel-banner-meta"
+                style={{ width: "100px" }}
+              ></div>
+              <div className="skeleton-element skel-banner-title"></div>
+              <div className="apb-meta">
+                <div className="skeleton-element skel-banner-meta"></div>
+                <div className="skeleton-element skel-banner-meta"></div>
+              </div>
+              <div
+                className="skeleton-element skel-progress"
+                style={{ marginTop: "1.25rem" }}
+              ></div>
+              <div className="apb-bottom" style={{ marginTop: "1rem" }}>
+                <div
+                  className="skeleton-element skel-banner-meta"
+                  style={{ width: "150px" }}
+                ></div>
+                <div
+                  className="skeleton-element"
+                  style={{
+                    width: "140px",
+                    height: "36px",
+                    borderRadius: "0.75rem",
+                  }}
+                ></div>
+              </div>
+            </div>
+
+            {/* Sections & Cards Skeleton Grid */}
+            <section className="section" style={{ padding: "1.25rem 0" }}>
+              <div className="section-header">
+                <div
+                  className="skeleton-element skel-title"
+                  style={{ width: "150px", marginTop: 0, height: "20px" }}
+                ></div>
+              </div>
+
+              <div className="paths-grid">
+                <div className="path-card" style={{ minHeight: "220px" }}>
+                  <div className="path-card-top">
+                    <div className="skeleton-element skel-icon"></div>
+                    <div className="skeleton-element skel-badge"></div>
+                  </div>
+                  <div
+                    className="skeleton-element skel-title"
+                    style={{ height: "20px" }}
+                  ></div>
+                  <div className="skeleton-element skel-desc"></div>
+                  <div className="skeleton-element skel-desc short"></div>
+                  <div className="skeleton-element skel-progress"></div>
+                  <div
+                    className="path-card-footer"
+                    style={{ borderTop: "none", paddingTop: 0 }}
+                  >
+                    <div className="skeleton-element skel-footer-item"></div>
+                    <div className="skeleton-element skel-footer-item"></div>
+                  </div>
+                </div>
+
+                <div className="path-card" style={{ minHeight: "220px" }}>
+                  <div className="path-card-top">
+                    <div className="skeleton-element skel-icon"></div>
+                    <div className="skeleton-element skel-badge"></div>
+                  </div>
+                  <div
+                    className="skeleton-element skel-title"
+                    style={{ height: "20px" }}
+                  ></div>
+                  <div className="skeleton-element skel-desc"></div>
+                  <div className="skeleton-element skel-desc short"></div>
+                  <div className="skeleton-element skel-progress"></div>
+                  <div
+                    className="path-card-footer"
+                    style={{ borderTop: "none", paddingTop: 0 }}
+                  >
+                    <div className="skeleton-element skel-footer-item"></div>
+                    <div className="skeleton-element skel-footer-item"></div>
+                  </div>
+                </div>
+
+                <div className="path-card" style={{ minHeight: "220px" }}>
+                  <div className="path-card-top">
+                    <div className="skeleton-element skel-icon"></div>
+                    <div className="skeleton-element skel-badge"></div>
+                  </div>
+                  <div
+                    className="skeleton-element skel-title"
+                    style={{ height: "20px" }}
+                  ></div>
+                  <div className="skeleton-element skel-desc"></div>
+                  <div className="skeleton-element skel-desc short"></div>
+                  <div className="skeleton-element skel-progress"></div>
+                  <div
+                    className="path-card-footer"
+                    style={{ borderTop: "none", paddingTop: 0 }}
+                  >
+                    <div className="skeleton-element skel-footer-item"></div>
+                    <div className="skeleton-element skel-footer-item"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Progress & Certificates Card Stacked at Bottom */}
+            <div
+              className="card trending"
+              style={{
+                marginTop: "2rem",
+                width: "100%",
+                boxSizing: "border-box",
+              }}
+            >
+              <div
+                className="skeleton-element skel-title"
+                style={{ width: "120px", height: "18px", marginTop: 0 }}
+              ></div>
+              <div className="stat-row" style={{ marginTop: "1rem" }}>
+                <div
+                  className="skeleton-element"
+                  style={{ height: "70px", borderRadius: "0.875rem" }}
+                ></div>
+                <div
+                  className="skeleton-element"
+                  style={{ height: "70px", borderRadius: "0.875rem" }}
+                ></div>
+                <div
+                  className="skeleton-element"
+                  style={{ height: "70px", borderRadius: "0.875rem" }}
+                ></div>
+              </div>
+              <div
+                className="menu-divider menu-divider-md"
+                style={{ margin: "1.5rem 0" }}
+              ></div>
+              <div
+                className="skeleton-element skel-title"
+                style={{ width: "100px", marginBottom: "1rem" }}
+              ></div>
+              {[1, 2, 3].map((item) => (
+                <div
+                  key={item}
+                  className="cert-item"
+                  style={{
+                    border: "none",
+                    padding: "0.5rem 0",
+                    background: "transparent",
+                  }}
+                >
+                  <div
+                    className="skeleton-element skel-icon"
+                    style={{ width: "38px", height: "38px" }}
+                  ></div>
+                  <div style={{ flex: 1 }}>
+                    <div
+                      className="skeleton-element skel-title"
+                      style={{ width: "60%", marginTop: 0 }}
+                    ></div>
+                    <div
+                      className="skeleton-element skel-desc"
+                      style={{ width: "40%" }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </main>
+        </div>
+      </>
+    );
+  }
+
+  // ==========================================================================
+  // REAL-TIME CONTENT RENDER (Stacked 2-Column Layout)
+  // ==========================================================================
   return (
     <>
       <Navbar currentTheme={currentTheme} onThemeChange={onThemeChange} />
@@ -178,46 +406,34 @@ export default function Learning({ currentTheme, onThemeChange }) {
               </a>
             </div>
             <div className="paths-grid">
-              <div className="path-card">
-                <div className="path-card-top">
-                  <div className="path-icon bg-blue">🐍</div>
-                  <span className="path-enroll-badge badge-enrolled">
-                    Enrolled
-                  </span>
-                </div>
-                <p className="path-card-name">Python for Data Analysis</p>
-                <p className="path-card-desc">
-                  Master pandas, NumPy, and data visualisation through hands-on
-                  projects.
-                </p>
-                <div className="path-card-progress-wrap">
-                  <div className="path-card-progress-fill w-37"></div>
-                </div>
-                <div className="path-card-footer">
-                  <span>37% complete</span>
-                  <span className="duration">⏱ 8 weeks</span>
-                </div>
-              </div>
-              <div className="path-card">
-                <div className="path-card-top">
-                  <div className="path-icon bg-pink">🎨</div>
-                  <span className="path-enroll-badge badge-enrolled">
-                    Enrolled
-                  </span>
-                </div>
-                <p className="path-card-name">UI/UX Design Fundamentals</p>
-                <p className="path-card-desc">
-                  Learn Figma, user research, wireframing, and design systems
-                  from scratch.
-                </p>
-                <div className="path-card-progress-wrap">
-                  <div className="path-card-progress-fill w-12"></div>
-                </div>
-                <div className="path-card-footer">
-                  <span>12% complete</span>
-                  <span className="duration">⏱ 6 weeks</span>
-                </div>
-              </div>
+              {learningData.paths
+                .filter((p) => p.tag === "Enrolled")
+                .map((p, i) => (
+                  <div className="path-card" key={`enrolled-${i}`}>
+                    <div className="path-card-top">
+                      <div className={`path-icon ${p.color}`}>{p.icon}</div>
+                      <span className="path-enroll-badge badge-enrolled">
+                        {p.tag}
+                      </span>
+                    </div>
+                    <p className="path-card-name">{p.name}</p>
+                    <p className="path-card-desc">{p.desc}</p>
+                    <div
+                      className="path-card-progress-wrap"
+                      style={{ marginTop: "auto" }}
+                    >
+                      <div
+                        className={`path-card-progress-fill ${i === 0 ? "w-37" : "w-12"}`}
+                      ></div>
+                    </div>
+                    <div className="path-card-footer">
+                      <span>{i === 0 ? "37%" : "12%"} complete</span>
+                      <span className="duration">
+                        ⏱ {i === 0 ? "8 weeks" : "6 weeks"}
+                      </span>
+                    </div>
+                  </div>
+                ))}
             </div>
           </section>
 
@@ -229,20 +445,15 @@ export default function Learning({ currentTheme, onThemeChange }) {
               </a>
             </div>
             <div className="paths-grid">
-              {ALL_PATHS.filter(
-                (p) =>
-                  ![
-                    "Python for Data Analysis",
-                    "UI/UX Design Fundamentals",
-                  ].includes(p.name),
-              )
+              {learningData.paths
+                .filter((p) => p.tag !== "Enrolled")
                 .filter((p) =>
                   query
                     ? p.name.toLowerCase().includes(query.toLowerCase())
                     : true,
                 )
                 .map((p, i) => (
-                  <div className="path-card" key={i}>
+                  <div className="path-card" key={`explore-${i}`}>
                     <div className="path-card-top">
                       <div className={`path-icon ${p.color}`}>{p.icon}</div>
                       <span className="path-enroll-badge badge-available">
@@ -258,48 +469,56 @@ export default function Learning({ currentTheme, onThemeChange }) {
                 ))}
             </div>
           </section>
-        </main>
 
-        <aside className="card trending">
-          <h3>Your Progress</h3>
-          <div className="stat-row">
-            <div className="stat-box">
-              <div className="stat-box-num">2</div>
-              <div className="stat-box-lbl">Active Paths</div>
+          {/* Progress & Certificates Section Stacked at Bottom */}
+          <div
+            className="card trending"
+            style={{
+              marginTop: "2.5rem",
+              width: "100%",
+              boxSizing: "border-box",
+            }}
+          >
+            <h3>Your Progress</h3>
+            <div className="stat-row">
+              <div className="stat-box">
+                <div className="stat-box-num">2</div>
+                <div className="stat-box-lbl">Active Paths</div>
+              </div>
+              <div className="stat-box">
+                <div className="stat-box-num">12</div>
+                <div className="stat-box-lbl">Modules Done</div>
+              </div>
+              <div className="stat-box">
+                <div className="stat-box-num">1</div>
+                <div className="stat-box-lbl">Completed Paths</div>
+              </div>
             </div>
-            <div className="stat-box">
-              <div className="stat-box-num">12</div>
-              <div className="stat-box-lbl">Modules Done</div>
+            <div className="menu-divider menu-divider-md"></div>
+            <h3 className="mb-14">Certificates</h3>
+            <div className="cert-item">
+              <div className="cert-icon blue large">🏅</div>
+              <div>
+                <p className="cert-name">Intro to Python</p>
+                <p className="cert-status green">✓ Earned · March 2025</p>
+              </div>
             </div>
-            <div className="stat-box">
-              <div className="stat-box-num">1</div>
-              <div className="stat-box-lbl">Completed Paths</div>
+            <div className="cert-item">
+              <div className="cert-icon yellow large">🎯</div>
+              <div>
+                <p className="cert-name">Data Analysis</p>
+                <p className="cert-status yellow">In progress · 37%</p>
+              </div>
+            </div>
+            <div className="cert-item">
+              <div className="cert-icon purple large">🔒</div>
+              <div>
+                <p className="cert-name">Machine Learning</p>
+                <p className="cert-status">Not started</p>
+              </div>
             </div>
           </div>
-          <div className="menu-divider menu-divider-md"></div>
-          <h3 className="mb-14">Certificates</h3>
-          <div className="cert-item">
-            <div className="cert-icon blue large">🏅</div>
-            <div>
-              <p className="cert-name">Intro to Python</p>
-              <p className="cert-status green">✓ Earned · March 2025</p>
-            </div>
-          </div>
-          <div className="cert-item">
-            <div className="cert-icon yellow large">🎯</div>
-            <div>
-              <p className="cert-name">Data Analysis</p>
-              <p className="cert-status yellow">In progress · 37%</p>
-            </div>
-          </div>
-          <div className="cert-item">
-            <div className="cert-icon purple large">🔒</div>
-            <div>
-              <p className="cert-name">Machine Learning</p>
-              <p className="cert-status">Not started</p>
-            </div>
-          </div>
-        </aside>
+        </main>
       </div>
     </>
   );

@@ -28,7 +28,6 @@ export default function Navbar() {
           onClick={() => navigate("/")}
         >
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center p-2 shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform overflow-hidden">
-            {/* EDUCONNECT NAVBAR LOGO IMAGE PLACEHOLDER */}
             <img
               src="/images/E.png"
               alt="EduConnect Logo"
@@ -78,87 +77,89 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Toggle */}
+        {/* Animated Mobile Toggle Button */}
         <button
-          className="md:hidden p-2 text-slate-400 hover:text-white focus:outline-none cursor-pointer"
+          className="md:hidden p-2.5 text-slate-300 hover:text-white focus:outline-none cursor-pointer rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm active:scale-95 transition-transform"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
+          aria-expanded={isMenuOpen}
         >
-          {isMenuOpen ? (
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          ) : (
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          )}
+          <div className="w-5 h-4 relative flex flex-col justify-between">
+            <span
+              className={`w-full h-0.5 bg-current rounded-full transition-all duration-300 transform origin-left ${
+                isMenuOpen ? "rotate-45 translate-x-0.5 -translate-y-0.5" : ""
+              }`}
+            />
+            <span
+              className={`w-full h-0.5 bg-current rounded-full transition-opacity duration-200 ${
+                isMenuOpen ? "opacity-0" : "opacity-100"
+              }`}
+            />
+            <span
+              className={`w-full h-0.5 bg-current rounded-full transition-all duration-300 transform origin-left ${
+                isMenuOpen ? "-rotate-45 translate-x-0.5 translate-y-0.5" : ""
+              }`}
+            />
+          </div>
         </button>
       </nav>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Backdrop Overlay (Closes menu on tap outside) */}
       {isMenuOpen && (
-        <div className="md:hidden bg-slate-900/95 backdrop-blur-lg border-b border-slate-800 px-6 py-5 flex flex-col gap-4">
-          <button
-            onClick={() => handleNavigation("features")}
-            className="text-slate-300 hover:text-white text-left font-medium text-base py-1"
-          >
-            Features
-          </button>
-          <button
-            onClick={() => handleNavigation("about")}
-            className="text-slate-300 hover:text-white text-left font-medium text-base py-1"
-          >
-            About
-          </button>
-          <button
-            onClick={() => handleNavigation("contact")}
-            className="text-slate-300 hover:text-white text-left font-medium text-base py-1"
-          >
-            Contact
-          </button>
-          <div className="flex flex-col gap-2 pt-3 border-t border-slate-800">
-            <button
-              onClick={() => {
-                navigate("/auth/login");
-                setIsMenuOpen(false);
-              }}
-              className="w-full text-slate-200 border border-slate-700 hover:bg-slate-800 font-semibold py-2.5 rounded-xl text-sm"
-            >
-              Login
-            </button>
-            <button
-              onClick={() => {
-                navigate("/auth/signup");
-                setIsMenuOpen(false);
-              }}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-2.5 rounded-xl text-sm shadow-md"
-            >
-              Sign Up
-            </button>
-          </div>
-        </div>
+        <div
+          onClick={() => setIsMenuOpen(false)}
+          className="fixed inset-0 top-[73px] bg-slate-950/60 backdrop-blur-sm md:hidden z-40"
+        />
       )}
+
+      {/* Mobile Menu Dropdown */}
+      <div
+        className={`fixed top-[73px] left-0 right-0 z-50 md:hidden bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80 px-6 py-6 flex flex-col gap-4 shadow-2xl transition-all duration-300 ease-in-out transform ${
+          isMenuOpen
+            ? "translate-y-0 opacity-100 pointer-events-auto"
+            : "-translate-y-4 opacity-0 pointer-events-none"
+        }`}
+      >
+        <button
+          onClick={() => handleNavigation("features")}
+          className="text-slate-300 hover:text-white text-left font-medium text-base py-2 transition-colors cursor-pointer"
+        >
+          Features
+        </button>
+        <button
+          onClick={() => handleNavigation("about")}
+          className="text-slate-300 hover:text-white text-left font-medium text-base py-2 transition-colors cursor-pointer"
+        >
+          About
+        </button>
+        <button
+          onClick={() => handleNavigation("contact")}
+          className="text-slate-300 hover:text-white text-left font-medium text-base py-2 transition-colors cursor-pointer"
+        >
+          Contact
+        </button>
+
+        <div className="flex flex-col gap-3 pt-4 border-t border-slate-800/80">
+          <button
+            onClick={() => {
+              navigate("/auth/login");
+              setIsMenuOpen(false);
+            }}
+            className="w-full text-slate-200 border border-slate-800 bg-slate-900/80 hover:bg-slate-800 font-semibold py-3 rounded-xl text-sm transition-all cursor-pointer active:scale-[0.98]"
+          >
+            Login
+          </button>
+          <button
+            onClick={() => {
+              navigate("/auth/signup");
+              setIsMenuOpen(false);
+            }}
+            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:brightness-110 text-white font-bold py-3 rounded-xl text-sm shadow-lg shadow-blue-600/25 transition-all cursor-pointer active:scale-[0.98]"
+          >
+            Sign Up
+          </button>
+        </div>
+      </div>
     </header>
   );
 }

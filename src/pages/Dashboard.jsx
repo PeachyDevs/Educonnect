@@ -1,8 +1,8 @@
-import Navbarapp from "../components/Navbarapp.jsx";
-import Sidebar from "../../src/components/Sidebar.jsx";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbarapp.jsx";
+import Sidebar from "../../src/components/Sidebar.jsx";
+import "../dashboard.css";
 
 export default function Dashboard({ currentTheme, onThemeChange }) {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export default function Dashboard({ currentTheme, onThemeChange }) {
     setLoadingProfile(false);
   }, [navigate]);
 
-  // Real time-based greeting instead of hardcoded "Good Morning"
+  // Real time-based greeting
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 12) return "Good Morning";
@@ -35,11 +35,21 @@ export default function Dashboard({ currentTheme, onThemeChange }) {
   };
 
   return (
-    <>
+    <div className="dashboard-wrapper">
       <Navbar currentTheme={currentTheme} onThemeChange={onThemeChange} />
+
+      {/* Background Animated Accents matching the landing page */}
+      <div className="bg-glow-left" />
+      <div className="bg-glow-right" />
+      <div className="bg-grid-overlay" />
+
+      {/* Main Container Layout */}
       <div className="container">
         <Sidebar />
+
+        {/* Main Feed Column */}
         <main className="main-content">
+          {/* Welcome Banner */}
           <div className="welcome-banner">
             <div className="welcome-text">
               <p className="welcome-sub">{getGreeting()} 👋</p>
@@ -73,6 +83,7 @@ export default function Dashboard({ currentTheme, onThemeChange }) {
             </div>
           </div>
 
+          {/* Learning Path Section */}
           <section className="section">
             <div className="section-header">
               <h3 className="section-title">Current Learning Path</h3>
@@ -92,40 +103,44 @@ export default function Dashboard({ currentTheme, onThemeChange }) {
             </div>
           </section>
 
-          <section className="section">
-            <div className="section-header">
-              <h3 className="section-title">This Week's Milestones</h3>
-              <span className="badge-count">Coming Soon</span>
-            </div>
-            <div className="milestones-grid">
-              <div className="milestone">
-                <div className="ms-check pending">○</div>
-                <div>
-                  <p className="ms-title">
-                    Milestones launch with Growth Groups
-                  </p>
-                  <p className="ms-sub">Available in a future update</p>
+          {/* Milestones & Accountability */}
+          <div className="dashboard-dual-section">
+            <section className="section">
+              <div className="section-header">
+                <h3 className="section-title">This Week's Milestones</h3>
+                <span className="badge-count">Coming Soon</span>
+              </div>
+              <div className="milestones-grid">
+                <div className="milestone">
+                  <div className="ms-check pending">○</div>
+                  <div>
+                    <p className="ms-title">
+                      Milestones launch with Growth Groups
+                    </p>
+                    <p className="ms-sub">Available in a future update</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
 
-          <section className="section">
-            <div className="section-header">
-              <h3 className="section-title">Accountability Group</h3>
-              <span className="badge-count">Coming Soon</span>
-            </div>
-            <div className="group-card">
-              <div className="group-info">
-                <p className="group-name">You haven't joined a group yet</p>
-                <p className="group-checkin">
-                  Growth Groups are launching soon — check back here.
-                </p>
+            <section className="section">
+              <div className="section-header">
+                <h3 className="section-title">Accountability Group</h3>
+                <span className="badge-count">Coming Soon</span>
               </div>
-            </div>
-          </section>
+              <div className="group-card">
+                <div className="group-info">
+                  <p className="group-name">You haven't joined a group yet</p>
+                  <p className="group-checkin">
+                    Growth Groups are launching soon — check back here.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </div>
         </main>
 
+        {/* Right Sidebar Column (Trending & Events) */}
         <aside className="card trending">
           <h3>Trending Skills</h3>
           <div className="trend-item">
@@ -168,7 +183,9 @@ export default function Dashboard({ currentTheme, onThemeChange }) {
             </div>
             <span className="trend-badge">Popular</span>
           </div>
+
           <div className="menu-divider menu-divider-lg"></div>
+
           <h3 className="mb-14">Upcoming Events</h3>
           <div className="event-item">
             <div className="event-date">
@@ -182,6 +199,6 @@ export default function Dashboard({ currentTheme, onThemeChange }) {
           </div>
         </aside>
       </div>
-    </>
+    </div>
   );
 }

@@ -1,99 +1,44 @@
 import { NavLink } from "react-router-dom";
 import {
-  LayoutDashboard,
   BookOpen,
+  ChevronRight,
+  LayoutDashboard,
   FolderKanban,
   Users,
   Trophy,
-  Target,
-  ChevronRight,
 } from "lucide-react";
 
-const weeklyProgress = 68;
-
-const menuItems = [
-  {
-    label: "Dashboard",
-    to: "/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    label: "My Courses",
-    to: "/learning",
-    icon: BookOpen,
-  },
-  {
-    label: "My Projects",
-    to: "/project",
-    icon: FolderKanban,
-  },
-  {
-    label: "My Groups",
-    to: "/groups",
-    icon: Users,
-  },
-  {
-    label: "Achievements",
-    to: "/achievements",
-    icon: Trophy,
-  },
-];
-
 export default function Sidebar() {
+  const menuItems = [
+    { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+    { name: "My Courses", path: "/learning", icon: BookOpen },
+    { name: "My Projects", path: "/project", icon: FolderKanban },
+    { name: "Messages", path: "/groups", icon: Users },
+    { name: "Achievements", path: "/achievements", icon: Trophy },
+  ];
+
   return (
     <aside className="sidebar">
-      <div className="sidebar-header">
-        <h2>Workspace</h2>
-
-        <p>Your learning hub</p>
-      </div>
-
-      <nav className="sidebar-menu">
+      <nav className="nav-list">
         {menuItems.map((item) => {
           const Icon = item.icon;
-
           return (
             <NavLink
-              key={item.to}
-              to={item.to}
+              key={item.name}
+              to={item.path}
               className={({ isActive }) =>
-                `menu-item ${isActive ? "active" : ""}`
+                `nav-item ${isActive ? "active" : ""}`
               }
             >
               <div className="menu-left">
-                <Icon size={19} />
-
-                <span>{item.label}</span>
+                <Icon size={18} />
+                <span>{item.name}</span>
               </div>
-
-              <ChevronRight size={16} className="arrow" />
+              <ChevronRight size={16} className="chevron" />
             </NavLink>
           );
         })}
       </nav>
-
-      <div className="sidebar-divider"></div>
-
-      <div className="goal-card">
-        <div className="goal-title">
-          <Target size={18} />
-
-          <span>Weekly Goal</span>
-        </div>
-
-        <div className="progress-bar">
-          <div
-            className="progress-fill"
-            style={{ width: `${weeklyProgress}%` }}
-          ></div>
-        </div>
-
-        <div className="goal-footer">
-          <span>{weeklyProgress}% Complete</span>
-
-          <strong>17 / 25 hrs</strong>
-        </div>
-      </div>
     </aside>
   );
 }

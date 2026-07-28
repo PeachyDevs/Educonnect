@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbarapp.jsx";
 import Sidebar from "../../src/components/Sidebar.jsx";
 import profileImage from "../../images/eeh.jpg";
+import "../dashboard.css";
 
 export default function Profile({ currentTheme, onThemeChange }) {
   const [profileData, setProfileData] = useState(() => {

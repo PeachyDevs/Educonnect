@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import profileImage from "../../images/eeh.jpg";
 import logo from "../../images/E.png";
+import "../dashboard.css";
 
 const previewNotifications = [
   {

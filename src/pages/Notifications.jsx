@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Navbar from "../components/Navbarapp.jsx";
+import "../dashboard.css";
 
 const INITIAL_NOTIFICATIONS = [
   // 1. Added a couple of Friend Requests to the system[cite: 5]

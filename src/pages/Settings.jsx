@@ -17,6 +17,7 @@ import {
   UsersIcon,
   ArrowLeft,
 } from "lucide-react";
+import "../dashboard.css";
 
 const securityLevels = [
   { label: "At Risk", color: "#dc2626", icon: <AlertCircle size={18} /> },
