@@ -9,7 +9,7 @@ import Signup from "./pages/auth/Signup";
 import Dashboard from "./pages/Dashboard.jsx";
 import Learning from "./pages/Learning.jsx";
 import Projects from "./pages/Projects.jsx";
-import Groups from "./pages/Messages.jsx";
+import Messages from "./pages/Messages.jsx";
 import Achievements from "./pages/Achievements.jsx";
 import Notifications from "./pages/Notifications.jsx";
 import Profile from "./pages/Profile.jsx";
@@ -32,7 +32,7 @@ export default function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/learning" element={<Learning />} />
         <Route path="/project" element={<Projects />} />
-        <Route path="/groups" element={<Groups />} />
+        <Route path="/messages" element={<Messages />} />
         <Route path="/achievements" element={<Achievements />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/notifications" element={<Notifications />} />

@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbarapp.jsx";
-import Sidebar from "../../src/components/Sidebar.jsx";
+import Sidebar from "../components/Sidebar.jsx";
 import { useState, useRef, useEffect } from "react";
 import { Search, X } from "lucide-react";
 import "../dashboard.css";
@@ -16,7 +16,7 @@ const ALL_PROJECTS = [
   },
 ];
 
-export default function Projects({ currentTheme, onThemeChange }) {
+export default function Projects() {
   const [activeTab, setActiveTab] = useState("Active");
   const [query, setQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -54,7 +54,7 @@ export default function Projects({ currentTheme, onThemeChange }) {
   if (isLoading) {
     return (
       <>
-        <Navbar currentTheme={currentTheme} onThemeChange={onThemeChange} />
+        <Navbar />
         <div className="container">
           <Sidebar />
           <main className="main-content">
