@@ -4,7 +4,7 @@ import Navbar from "../components/Navbarapp.jsx";
 import Sidebar from "../../src/components/Sidebar.jsx";
 import "../dashboard.css";
 
-export default function Dashboard({ currentTheme, onThemeChange }) {
+export default function Dashboard() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
@@ -36,7 +36,7 @@ export default function Dashboard({ currentTheme, onThemeChange }) {
 
   return (
     <div className="dashboard-wrapper">
-      <Navbar currentTheme={currentTheme} onThemeChange={onThemeChange} />
+      <Navbar />
 
       {/* Background Animated Accents matching the landing page */}
       <div className="bg-glow-left" />

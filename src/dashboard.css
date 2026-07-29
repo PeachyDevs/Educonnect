@@ -68,13 +68,16 @@ svg {
   min-height: 100vh;
   width: 100%;
   max-width: 100vw;
+  padding-top: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
   background-color: var(--bg-dark);
   color: var(--text-main);
   overflow-x: hidden;
 }
 
 .container {
-  display: grid;
+  display: flex;
   grid-template-columns: 240px 1fr; /* Reduced sidebar column width */
   width: 100%;
   max-width: 1600px;
@@ -2017,14 +2020,84 @@ svg {
 }
 
 /* ==========================================================================
-   MESSAGES PAGE
+   MESSAGES LAYOUT - FULL WIDTH & RESPONSIVE FIX
    ========================================================================== */
-.messages-layout {
+
+/* Remove outer container padding when on the messages page so it spans edge-to-edge */
+.container:has(.messages-layout),
+.container:has(.tg-panel) {
+  max-width: 100% !important;
+  padding: 0 !important;
+  border: none;
+  gap: 0 !important;
+}
+
+.dashboard-wrapper:has(.messages-layout),
+.dashboard-wrapper:has(.tg-panel) {
+  max-width: 100vw !important;
+  padding-top: 0 !important;
+}
+
+.main-content:has(.messages-layout),
+.main-content:has(.tg-panel) {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+
+/* Messages Layout Container */
+.messages-layout,
+.messages-layout.tg-panel {
   display: flex;
-  height: calc(100vh - 200px);
-  min-height: 500px;
-  padding: 0;
+  width: 100% !important;
+  height: calc(100vh - 64px); /* Fills screen perfectly below navbar */
+  background: #0f172a;
+  border-radius: 0; /* Edge-to-edge fit */
   overflow: hidden;
+  box-shadow: none;
+  margin: 0;
+}
+
+/* Ensure Chat List Sidebar maintains proper width */
+.messages-sidebar,
+.messages-sidebar.tg-sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--panel-border);
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chat Window takes all remaining space */
+.chat-window,
+.chat-window.tg-chat-window {
+  flex: 1 !important;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  width: auto !important;
+  background: rgba(2, 6, 23, 0.4);
+}
+
+/* Ensure chat body and input bar stretch properly */
+.chat-messages-body,
+.tg-chat-bg {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  width: 100%;
+}
+
+.chat-input-form,
+.tg-input-bar {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .messages-sidebar {
@@ -2353,12 +2426,15 @@ svg {
 
 .messages-layout.tg-panel {
   display: flex;
-  height: calc(100vh - 180px);
-  min-height: 600px;
-  background: var(--card-bg, #0f172a);
-  border: 1px solid var(--panel-border, #1e293b);
-  border-radius: 1.25rem;
+  height: calc(
+    100vh - 64px
+  ); /* Matches exact screen height minus the 64px navbar */
+  background: #0f172a;
+  border-radius: 0; /* Removes rounded corners for edge-to-edge fit */
   overflow: hidden;
+  box-shadow: none; /* Removes shadow framing */
+  width: 100% !important;
+  margin: 0;
 }
 
 /* 1. Left Vertical Folder Rail */
@@ -2627,4 +2703,483 @@ svg {
 .tg-bottom-tab.active {
   color: #3b82f6;
   background: rgba(59, 130, 246, 0.15);
+}
+
+/* ==========================================================================
+   RIGHT-CLICK CONTEXT MENU
+   ========================================================================== */
+
+.msg-context-menu {
+  position: absolute;
+  background: #1e293b;
+  border: 1px solid var(--panel-border, #334155);
+  border-radius: 8px;
+  padding: 6px 0;
+  min-width: 160px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.msg-context-menu button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  color: #f8fafc;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.msg-context-menu button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.msg-context-divider {
+  height: 1px;
+  background: #334155;
+  margin: 4px 0;
+}
+
+.msg-context-menu .msg-context-delete {
+  color: #ef4444;
+}
+
+.msg-context-menu .msg-context-delete:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==========================================================================
+   REPLY UI STYLES
+   ========================================================================== */
+
+/* The wrapper containing both the reply preview and the input form */
+.tg-input-area-container {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel-bg);
+  border-top: 1px solid var(--panel-border);
+}
+
+/* The preview box that pops up above the input field */
+.reply-preview-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: rgba(30, 41, 59, 0.7); /* Slightly darker/transparent bg */
+  border-left: 4px solid #3b82f6; /* Blue accent line */
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.reply-preview-content {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.reply-preview-sender {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #3b82f6;
+  margin-bottom: 2px;
+}
+
+.reply-preview-text {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+}
+
+.reply-cancel-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.reply-cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+}
+
+/* Remove the border-top from the input bar so it meshes with the preview box */
+.tg-input-area-container .tg-input-bar {
+  border-top: none;
+}
+
+/* Embedded Quote inside the chat bubbles */
+.bubble-reply-quote {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  position: relative;
+}
+
+/* Accent colors depending on whether the message is incoming or outgoing */
+.quote-outgoing {
+  border-left: 3px solid rgba(255, 255, 255, 0.5);
+}
+
+.quote-incoming {
+  border-left: 3px solid #3b82f6;
+}
+
+.quote-sender-name {
+  font-weight: 600;
+  margin-bottom: 3px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.quote-text {
+  opacity: 0.8;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* limits quote to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   WHATSAPP-STYLE CONTACT INFO SIDEBAR
+   ========================================================================== */
+
+.whatsapp-info-sidebar {
+  width: 320px;
+  background-color: var(--panel-bg);
+  border-left: 1px solid var(--panel-border);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  animation: slideInRight 0.2s ease-out;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.whatsapp-info-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  background-color: #1e293b;
+  border-bottom: 1px solid var(--panel-border);
+  font-weight: 600;
+  color: #f8fafc;
+  font-size: 1rem;
+}
+
+.whatsapp-info-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.whatsapp-profile-section {
+  text-align: center;
+  padding: 0 20px 16px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.whatsapp-big-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 12px;
+  border: 2px solid #334155;
+}
+
+.whatsapp-big-avatar-fallback {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f8fafc;
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 0 auto 12px;
+}
+
+.whatsapp-profile-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0 0 4px 0;
+}
+
+.whatsapp-profile-sub {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+/* Quick Action Buttons (Audio, Video, Search) */
+.whatsapp-action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 8px 20px 16px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.wa-action-btn {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #3b82f6;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
+}
+
+.wa-action-btn span {
+  font-size: 0.75rem;
+  color: #f8fafc;
+}
+
+.wa-action-btn:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: #3b82f6;
+}
+
+/* Info Card (About) */
+.whatsapp-info-card {
+  background: #1e293b;
+  margin: 0 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+}
+
+.wa-card-label {
+  font-size: 0.75rem;
+  color: #3b82f6;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.wa-card-value {
+  font-size: 0.9rem;
+  color: #f8fafc;
+  line-height: 1.4;
+}
+
+/* Settings List Options */
+.whatsapp-settings-list {
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+  gap: 4px;
+}
+
+.wa-setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #f8fafc;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.wa-setting-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.wa-setting-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #94a3b8;
+}
+
+.wa-setting-left span {
+  color: #f8fafc;
+}
+
+.wa-setting-right {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.wa-setting-divider {
+  height: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  margin: 8px -16px;
+}
+
+.whatsapp-danger-zone {
+  padding: 4px 0;
+}
+
+.wa-danger-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  color: #ef4444;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.wa-danger-item:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* ==========================================================================
+   CHAT HEADER DROPDOWN MENU FIX
+   ========================================================================== */
+
+.chat-header-actions {
+  position: relative;
+}
+
+.chat-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  min-width: 160px;
+  padding: 6px;
+  margin-top: 6px;
+}
+
+.chat-menu-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #f8fafc;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.chat-menu-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================================================
+   CHAT MENU PANEL STYLES (Archive, Calls, Groups, Spam, Chats)
+   ========================================================================== */
+
+.tg-chat-menu-panel {
+  width: 110px;
+  background-color: #0f172a;
+  border-right: 1px solid var(--panel-border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.tg-menu-header {
+  padding: 16px 12px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.tg-menu-items {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 4px;
+}
+
+.tg-menu-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 10px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.tg-menu-btn span {
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.tg-menu-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f8fafc;
+}
+
+.tg-menu-btn.active {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
 }
