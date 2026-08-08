@@ -13,13 +13,12 @@ export default function Dashboard({ currentTheme, onThemeChange }) {
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
 
-    if (!token) {
+    if (!token && !import.meta.env.DEV) {
       navigate("/auth/login");
-      return;
-    }
+        return;
+      }
 
     if (user) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setProfile(JSON.parse(user));
     }
 

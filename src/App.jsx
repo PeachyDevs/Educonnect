@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RootLayout from "./layouts/RootLayout";
 import { useState, useEffect } from "react";
 
@@ -36,7 +36,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<RootLayout />}>
-          <Route index element={<Landing />} />
+          <Route index element={ import.meta.env.DEV ? <Navigate to="/dashboard" replace /> : <Landing /> } />
           <Route path="auth/login" element={<Login />} />
           <Route path="auth/signup" element={<Signup />} />
         </Route>
