@@ -12,7 +12,7 @@ export default function Achievements({ currentTheme, onThemeChange }) {
             <div>
               <h1 className="page-title">Achievements</h1>
               <p className="page-sub">
-                Celebrate your wins, track badges earned, and see your next
+                Celebrate your Achievements, track badges earned, and see your next
                 milestones.
               </p>
             </div>
